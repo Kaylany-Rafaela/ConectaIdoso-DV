@@ -1,4 +1,4 @@
-# ConectaIdoso DV  
+# ⚠️ ConectaIdoso DV  
 **Plataforma de Apoio e Inclusão Digital para a Terceira Idade**  
 
 📍 UTFPR – Campus Dois Vizinhos  
@@ -7,13 +7,13 @@
 ---
 
 ## 👥 Equipe  
-- Gilberto Lima Gonçalves  
-- Fabiola Ribeiro da Silva  
-- Felippe Matheos Alves Zwirtes  
-- João Victor Krein  
-- Jhean Felipe Gotardo
-- Kaylany Rafaela Martins de Paula
-  
+- Fabiola Ribeiro da Silva – QA  
+- Felippe Matheos Alves Zwirtes – Backend  
+- Gilberto Lima Gonçalves – Backend  
+- Jhean Felipe Gotardo – UI/UX  
+- João Victor Krein – Frontend  
+- Kaylany Rafaela – Frontend  
+
 ---
 
 ## 🎯 Objetivo  
