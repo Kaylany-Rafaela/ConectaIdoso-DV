@@ -11,8 +11,22 @@
     <h1>Entrar</h1>
     <input type="text" id="usuario" placeholder="Digite seu telefone">
     <input type="password" id="senha" placeholder="Digite sua senha">
+
+    <div class="options-container">
+      <div class="remember-me">
+        <input type="checkbox" id="remember" name="remember">
+        <label for="remember">Lembrar</label>
+      </div>
+      <a href="#" class="forgot-password">Esqueceu a Senha?</a>
+    </div>
+
     <button class="btn-principal" onclick="entrar()">Entrar</button>
-    <p><a href="#">Cadastrar</a></p>
+
+    <div class="container-inscrever">
+      <span>Não Tem Uma Conta? </span>
+      <a href="#" onclick="Cadastrar()">Inscrever-se</a>
+    </div>
+
   </div>
   <script src="app.js"></script>
 </body>
