@@ -1,0 +1,121 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* Centralização */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f9f9f9;
+}
+
+/* Caixa principal */
+.container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 350px;
+  text-align: center;
+}
+
+/* Logo grande */
+.logo-grande {
+  width: 150px;
+  margin-bottom: 20px;
+}
+
+/* Cabeçalho com logo pequena */
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.cabecalho img {
+  width: 120px;
+}
+
+.cabecalho a {
+  text-decoration: none;
+  font-size: 14px;
+  color: #4a90e2;
+}
+
+/* Títulos */
+h1, h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Inputs */
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+/* Botões */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-principal { background: #4a90e2; color: #fff; }
+.btn-principal:hover { background: #357abd; }
+
+.btn-vermelho { background: #e74c3c; color: #fff; }
+.btn-vermelho:hover { background: #c0392b; }
+
+/* Menu principal */
+.menu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.menu button {
+  padding: 20px;
+  font-size: 16px;
+}
+
+/* Botões do menu */
+.menu .biblioteca { background: #3498db; color: #fff; }
+.menu .agenda { background: #f39c12; color: #fff; }
+.menu .chat { background: #27ae60; color: #fff; }
+.menu .emergencia { background: #e74c3c; color: #fff; } /* Emergência */
+
+/* Agenda */
+.lista-agenda {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.lista-agenda ul {
+  list-style: none;
+  padding: 0;
+}
+
+.lista-agenda li {
+  background: #f1f1f1;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 8px;
+}
