@@ -18,10 +18,10 @@ body {
 /* Caixa principal */
 .container {
   background: #fff;
-  padding: 30px;
+  padding: 40px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  width: 350px;
+  width: 550px;
   text-align: center;
 }
 
@@ -40,7 +40,7 @@ body {
 }
 
 .cabecalho img {
-  width: 120px;
+  width: 150px;
 }
 
 .cabecalho a {
@@ -164,4 +164,114 @@ button {
   padding: 10px;
   margin: 5px 0;
   border-radius: 8px;
+}
+
+/* --- Estilos da Biblioteca --- */
+
+.cabecalho-pagina {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Mágica acontece aqui! */
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.cabecalho-esquerda {
+  display: flex;
+  align-items: center;
+}
+
+.cabecalho-pagina h1 {
+  margin: 0 0 0 15px;
+  font-size: 1.8em;
+}
+
+.logo-cabecalho {
+  width: 150px; /* Ajuste o tamanho da logo se precisar */
+  height: auto;
+}
+
+/* Estilo do novo botão de voltar com ícone */
+.btn-voltar-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  color: #333;
+  font-size: 24px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.btn-voltar-icone:hover {
+  background-color: #f5f5f5;
+}
+
+/* Container que segura os cards */
+.lista-cards {
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Espaço entre os cards */
+}
+
+/* Estilo base de cada card */
+.card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden; /* Garante que o conteúdo respeite as bordas arredondadas */
+  cursor: pointer;
+  transition: transform 0.2s;
+  text-align: left;
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Efeito de levantar ao passar o mouse */
+}
+
+/* Cabeçalho colorido do card */
+.card-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  color: white;
+}
+
+.card-header .icon {
+  font-size: 24px;
+  margin-right: 15px;
+}
+
+.card-header h3 {
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.card-header p {
+  margin: 0;
+  font-size: 0.9em;
+  opacity: 0.9;
+}
+
+/* Corpo branco do card */
+.card-body {
+  padding: 20px;
+  color: #555;
+  font-size: 0.9em;
+}
+
+/* Cores específicas dos cards */
+.card.azul .card-header {
+  background-color: #3498db; /* Azul */
+}
+
+.card.verde .card-header {
+  background-color: #2ecc71; /* Verde */
 }
