@@ -2,27 +2,41 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Painel</title>
+  <title>Conecta Idoso - Painel</title>
   <link rel="stylesheet" href="estilo.css">
 </head>
 <body class="pagina-painel">
-  <div class="container">
+  <div class="caixa">
+    <!-- Cabeçalho -->
     <div class="cabecalho">
-      <img src="assets/logo-pequena.jpeg" alt="Conecta Idoso">
+      <img src="assets/logos/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
+      <button class="btn-sair" onclick="window.location.href='login.html'">Sair</button>
     </div>
 
     <h2>Bem-vindo!</h2>
-    <p>O que você gostaria de fazer hoje?</p>
 
-<div class="menu">
-  <button class="biblioteca" onclick="window.location.href='biblioteca.html'">Biblioteca</button>
-  <button class="agenda" onclick="window.location.href='agenda.html'">Agenda</button>
-  <button class="chat">Chat</button>
-  <button class="emergencia">Emergência</button>
-</div>
+    <!-- Menu em grade 2x2 -->
+    <div class="menu">
+      <button class="menu-item botao-biblioteca" onclick="window.location.href='biblioteca.html'">
+        <img class="icone-menu" src="assets/icones/biblioteca.png" alt="Biblioteca">
+        <span>Biblioteca</span>
+      </button>
 
-    <button class="btn-vermelho" onclick="sair()">Sair do App</button>
+      <button class="menu-item botao-agenda" onclick="window.location.href='agenda.html'">
+        <img class="icone-menu" src="assets/icones/agenda.png" alt="Agenda">
+        <span>Agenda</span>
+      </button>
+
+      <button class="menu-item botao-chat" onclick="window.location.href='chat.html'">
+        <img class="icone-menu" src="assets/icones/chat.png" alt="Chat">
+        <span>Chat</span>
+      </button>
+
+      <button class="menu-item botao-emergencia" onclick="window.location.href='emergencia.html'">
+        <img class="icone-menu" src="assets/icones/emergencia.png" alt="Emergência">
+        <span>Emergência</span>
+      </button>
+    </div>
   </div>
-  <script src="app.js"></script>
 </body>
 </html>

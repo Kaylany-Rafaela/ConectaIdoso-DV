@@ -3,27 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <title>Agenda</title>
-  <link rel="stylesheet" href="estilo.css">
+  <link rel="stylesheet" href="estilo.css"> <!-- apenas o CSS principal -->
 </head>
-<body>
-  <div class="container">
+<body class="pagina-agenda">
+  <div class="caixa">
+    
+    <!-- Cabeçalho -->
     <div class="cabecalho">
-      <img src="assets/logo-pequena.jpeg" alt="Conecta Idoso">
+      <button class="btn-voltar" onclick="window.location.href='painel.html'">Voltar</button>
+      <img src="assets/logos/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
+      <button class="btn-sair" onclick="sair()">Sair</button>
     </div>
 
     <h2>Agenda</h2>
 
-    <div class="lista-agenda">
-      <ul>
-        <li>🩺 Consulta médica – 14h</li>
-        <li>🎂 Aniversário da Maria – 10h</li>
-        <li>📹 Chamada de vídeo com João – 16h</li>
-      </ul>
-    </div>
+    <!-- Conteúdo principal -->
+    <div class="conteudo-agenda">
+      
+      <!-- Calendário -->
+      <div class="bloco-calendario">
+        <table class="calendario" id="calendario">
+          <thead>
+            <tr>
+              <th>Dom</th>
+              <th>Seg</th>
+              <th>Ter</th>
+              <th>Qua</th>
+              <th>Qui</th>
+              <th>Sex</th>
+              <th>Sáb</th>
+            </tr>
+          </thead>
+          <tbody id="dias">
+            <!-- preenchido pelo JS -->
+          </tbody>
+        </table>
+      </div>
 
-    <button class="btn-principal">+ Novo Compromisso</button>
-    <button class="btn-secundario" onclick="window.location.href='painel.html'">Voltar</button>
+      <!-- Lista de compromissos -->
+      <div class="lista-agenda">
+        <h3>Compromissos</h3>
+        <ul>
+          <li>🩺 Consulta médica – 14h</li>
+          <li>🎂 Aniversário da Maria – 10h</li>
+          <li>📹 Chamada de vídeo com João – 16h</li>
+        </ul>
+      </div>
+
+    </div>
   </div>
+
   <script src="app.js"></script>
 </body>
 </html>

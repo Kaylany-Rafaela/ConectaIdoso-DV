@@ -2,63 +2,44 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Biblioteca</title>
+  <title>Conecta Idoso - Biblioteca</title>
   <link rel="stylesheet" href="estilo.css">
 </head>
 <body class="pagina-biblioteca">
-  <div class="container">
-    <div class="cabecalho-pagina">
-      <div class="cabecalho-esquerda">
-        <a href="painel.html" class="btn-voltar-icone">←</a>
-        <h1>Biblioteca</h1>
-      </div>
-      <img src="assets/logo-pequena.jpeg" alt="Conecta Idoso" class="logo-cabecalho">
+  <div class="caixa">
+    
+    <!-- Cabeçalho -->
+    <div class="cabecalho">
+      <button class="btn-voltar" onclick="window.location.href='painel.html'">Voltar</button>
+      <img src="assets/logos/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
+      <button class="btn-sair" onclick="window.location.href='login.html'">Sair</button>
     </div>
 
-    <main class="lista-cards">
-      <div class="card azul" onclick="window.location.href='video.html'">
-        <div class="card-header">
-          <div class="icon">▶</div>
-          <div class="card-title">
-            <h3>Vídeos</h3>
-            <p>Aprenda assistindo</p>
-          </div>
-        </div>
-        <div class="card-body">
-          <p>4 itens disponíveis</p>
-          <p>Clique para ver todo o conteúdo</p>
-        </div>
+    <!-- Título -->
+    <h2>Biblioteca</h2>
+    <p>Escolha um tipo de conteúdo:</p>
+
+    <!-- Cards -->
+    <div class="cartoes">
+      <div class="cartao cartao-audio">
+        <img src="assets/icones/audio.png" alt="Áudios" class="icone">
+        <h3>Áudios</h3>
+        <p>Escute conteúdos educativos</p>
       </div>
 
-      <div class="card verde">
-        <div class="card-header">
-          <div class="icon">🎧</div>
-          <div class="card-title">
-            <h3>Áudios</h3>
-            <p>Ouça e aprenda</p>
-          </div>
-        </div>
-        <div class="card-body">
-          <p>4 itens disponíveis</p>
-          <p>Clique para ver todo o conteúdo</p>
-        </div>
+      <div class="cartao cartao-texto">
+        <img src="assets/icones/texto.png" alt="Textos" class="icone">
+        <h3>Textos</h3>
+        <p>Leia conteúdos informativos</p>
       </div>
 
-      <div class="card azul">
-        <div class="card-header">
-          <div class="icon">📄</div>
-          <div class="card-title">
-            <h3>Textos</h3>
-            <p>Guias práticos</p>
-          </div>
-        </div>
-        <div class="card-body">
-          <p>4 itens disponíveis</p>
-          <p>Clique para ver todo o conteúdo</p>
-        </div>
+      <div class="cartao cartao-video">
+        <img src="assets/icones/video.png" alt="Vídeos" class="icone">
+        <h3>Vídeos</h3>
+        <p>Assista materiais educativos</p>
       </div>
-    </main>
+    </div>
+
   </div>
-  <script src="app.js"></script>
 </body>
 </html>

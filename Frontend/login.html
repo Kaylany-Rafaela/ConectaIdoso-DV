@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Conecta Idoso - Entrada</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+
+<body class="pagina-login">
+    <div class="caixa">
+        <!-- Logo -->
+        <img src="assets/logos/logo-grande.jpeg" alt="Conecta Idoso" class="logo-grande">
+
+        <!-- Título -->
+        <h1>Entrar</h1>
+
+        <!-- Campos de login -->
+        <input type="text" id="usuario" placeholder="Digite seu telefone">
+        <input type="password" id="senha" placeholder="Digite sua senha">
+
+        <!-- Opções extras -->
+        <div class="opcoes-container">
+            <div class="lembrar-acesso">
+                <input type="checkbox" id="lembrar" name="lembrar">
+                <label for="lembrar">Lembrar o acesso</label>
+            </div>
+
+            <a href="esqueceu.html" class="esqueceu-senha">Esqueceu sua senha?</a>
+        </div>
+
+        <!-- Botão entrar -->
+        <button class="btn-principal" onclick="entrar()">Entrar</button>
+
+        <!-- Link para cadastro -->
+        <div class="container-inscrever">
+            <span>Não tem uma conta? </span>
+            <a href="cadastrar.html" onclick="cadastrar()">Cadastrar-se</a>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -2,35 +2,33 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Chat</title>
+  <title>Conecta Idoso - Chat</title>
   <link rel="stylesheet" href="estilo.css">
 </head>
-<body>
-  <header>
-    <button class="voltar" onclick="history.back()">←</button>
-    <h1>Maria (Filha)</h1>
-  </header>
+<body class="pagina-chat">
+  <div class="caixa">
 
-  <main class="chat">
-    <div class="msg recebida">
-      <p>Ei mãe, como está?</p>
-      <span>14:30</span>
+    <!-- Cabeçalho -->
+    <div class="cabecalho">
+      <button class="btn-voltar" onclick="window.location.href='painel.html'">Voltar</button>
+      <img src="assets/logos/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
+      <button class="btn-sair" onclick="sair()">Sair</button>
     </div>
 
-    <div class="msg enviada">
-      <p>Estou bem, querida! E você?</p>
-      <span>14:32</span>
+    <h2>Chat</h2>
+
+    <!-- Área de mensagens -->
+    <div id="areaMensagens" class="area-mensagens"></div>
+
+    <!-- Entrada de mensagem -->
+    <div class="entrada-mensagem">
+      <input type="text" id="inputMensagem" placeholder="Digite sua mensagem...">
+      <button id="btnEnviar" type="button">Enviar</button>
     </div>
 
-    <div class="msg recebida">
-      <p>Também estou bem! Vou te visitar no fim da semana</p>
-      <span>14:35</span>
-    </div>
-  </main>
+  </div>
 
-  <footer class="chat-input">
-    <input type="text" placeholder="Digite sua mensagem...">
-    <button class="enviar">➤</button>
-  </footer>
+  <!-- Script -->
+  <script src="app.js"></script>
 </body>
 </html>
