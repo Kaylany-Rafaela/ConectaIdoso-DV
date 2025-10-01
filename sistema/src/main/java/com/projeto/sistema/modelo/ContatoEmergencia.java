@@ -13,7 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="contato_emergencia")
+@Table(name="contato_emergencia") 
 public class ContatoEmergencia implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -26,14 +26,15 @@ public class ContatoEmergencia implements Serializable {
     private String nome;
     private String telefone;
 
-    @Column(name = "tipo_contato")
-    private String tipoContato;
-
+   
+    @Column(name = "tipo_contato") 
+    private String tipoContato; 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_idoso")
     @JsonBackReference
     private Usuario usuario;
 
+    
 
     public Long getId() {
         return id;
@@ -58,7 +59,7 @@ public class ContatoEmergencia implements Serializable {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-
+    
     public String getTipoContato() {
         return tipoContato;
     }
