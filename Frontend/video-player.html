@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Conecta Idoso - Assistindo Vídeo</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="pagina-conteudo pagina-player">
+  <div class="caixa">
+    <div class="cabecalho">
+      <button class="btn-voltar" onclick="window.location.href='videos.html'">Voltar</button>
+      <img src="assets/logos/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
+      <button class="btn-sair" onclick="window.location.href='login.html'">Sair</button>
+    </div>
+
+    <h2 class="titulo-video">Carregando vídeo...</h2>
+
+    <main class="player-container">
+      <div class="video-responsivo">
+        <iframe width="560" height="315" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    window.onload = function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      const videoId = urlParams.get('video');
+      const videoTitle = urlParams.get('titulo'); // Pega o TÍTULO da URL
+      
+      const iframe = document.querySelector('.video-responsivo iframe');
+      const h2Titulo = document.querySelector('.titulo-video');
+      
+      if (videoId) {
+        // Carrega o vídeo correto no player
+        iframe.src = `https://www.youtube.com/embed/${videoId}`;
+        
+        // Se um título foi passado na URL, atualiza o h2
+        if (videoTitle) {
+          h2Titulo.textContent = videoTitle;
+        }
+      } else {
+        // Se nenhum ID foi passado, mostra uma mensagem de erro
+        h2Titulo.textContent = "Erro: Vídeo não encontrado.";
+        console.error("Nenhum ID de vídeo foi fornecido na URL.");
+      }
+    };
+  </script>
+</body>
+</html>
