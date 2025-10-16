@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.projeto.sistema.modelo.ContatoEmergencia;
 import com.projeto.sistema.repositorio.ContatoEmergenciaRepositorio;
-import com.projeto.sistema.repositorio.UsuarioRepositorio;
+import com.projeto.sistema.repositorio.RepositorioUsuarios;
 
 @Controller
 public class ContatoEmergenciaControle {
@@ -21,7 +21,7 @@ public class ContatoEmergenciaControle {
     private ContatoEmergenciaRepositorio contatoEmergenciaRepositorio;
 
     @Autowired
-    private UsuarioRepositorio usuarioRepositorio; 
+    private RepositorioUsuarios RepositorioUsuarios; 
 
     /**
      * LISTA todos os contatos de emergência de um usuário específico.
@@ -42,7 +42,7 @@ public class ContatoEmergenciaControle {
     @GetMapping("/contatos/cadastro/{usuarioId}")
     public ModelAndView cadastrar(@PathVariable Long usuarioId, ContatoEmergencia contatoEmergencia) {
         ModelAndView mv = new ModelAndView("administrativo/contatos/cadastro");
-        usuarioRepositorio.findById(usuarioId).ifPresent(contatoEmergencia::setUsuario);
+        RepositorioUsuarios.findById(usuarioId).ifPresent(contatoEmergencia::setUsuario);
         mv.addObject("contatoEmergencia", contatoEmergencia);
         return mv;
     }

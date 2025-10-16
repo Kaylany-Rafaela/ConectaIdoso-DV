@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Agenda</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body class="pagina-agenda">
+  <div class="caixa">
+    
+    <!-- Cabeçalho -->
+    <div class="cabecalho">
+      <button class="btn-voltar" onclick="window.location.href='painel.html'">Voltar</button>
+      <img src="/images/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
+      <button class="btn-sair" onclick="sair()">Sair</button>
+    </div>
+
+    <h2>Agenda</h2>
+
+    <!-- Conteúdo principal -->
+    <div class="conteudo-agenda">
+      
+      <!-- Calendário -->
+      <div class="bloco-calendario">
+        <table class="calendario" id="calendario">
+          <thead>
+            <tr>
+              <th>Dom</th>
+              <th>Seg</th>
+              <th>Ter</th>
+              <th>Qua</th>
+              <th>Qui</th>
+              <th>Sex</th>
+              <th>Sáb</th>
+            </tr>
+          </thead>
+          <tbody id="dias">
+            <!-- preenchido pelo JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Lista de compromissos -->
+      <div class="lista-agenda">
+        <h3>Compromissos</h3>
+        <ul>
+          <li>🩺 Consulta médica – 14h</li>
+          <li>🎂 Aniversário da Maria – 10h</li>
+          <li>📹 Chamada de vídeo com João – 16h</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+  <script src="/js/app.js"></script>
+  <script>
+    // Checa se existe usuário logado no localStorage
+    var usuarioJSON = localStorage.getItem("usuarioLogado");
+    var usuarioLogado = JSON.parse(usuarioJSON)
+
+    if (!usuarioLogado) {
+      alert("Você precisa estar logado para acessar esta página.");
+      window.location.href = "login.html";
+    }
+    const h2 = document.getElementById("bem-vindo");
+    h2.textContent = `Bem-vindo(a), ${usuarioLogado.nome}!`;
+  </script>
+</body>
+</html>

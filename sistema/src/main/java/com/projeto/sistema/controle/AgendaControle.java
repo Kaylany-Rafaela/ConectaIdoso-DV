@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.projeto.sistema.modelo.Agenda;
-import com.projeto.sistema.modelo.Usuario;
 import com.projeto.sistema.repositorio.AgendaRepositorio;
-import com.projeto.sistema.repositorio.UsuarioRepositorio;
+import com.projeto.sistema.repositorio.RepositorioUsuarios;
 
 @Controller
 public class AgendaControle {
@@ -24,7 +23,7 @@ public class AgendaControle {
 
     
     @Autowired
-    private UsuarioRepositorio usuarioRepositorio;
+    private RepositorioUsuarios RepositorioUsuarios;
 
     @GetMapping("/agenda/usuario/{usuarioId}")
     public ModelAndView listarPorUsuario(@PathVariable Long usuarioId) {
@@ -41,7 +40,7 @@ public class AgendaControle {
     @GetMapping("/agenda/cadastro/{usuarioId}")
     public ModelAndView cadastrar(@PathVariable Long usuarioId, Agenda agenda) {
         ModelAndView mv = new ModelAndView("administrativo/agenda/cadastro");
-        usuarioRepositorio.findById(usuarioId).ifPresent(agenda::setIdoso);
+        RepositorioUsuarios.findById(usuarioId).ifPresent(agenda::setIdoso);
         mv.addObject("agenda", agenda);
         return mv;
     }

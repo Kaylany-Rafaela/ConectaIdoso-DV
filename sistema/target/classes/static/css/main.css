@@ -1,0 +1,1038 @@
+/* ======================== */
+/* RESET BÁSICO             */
+/* ======================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* ======================== */
+/* ESTRUTURA GERAL DAS PÁGINAS */
+/* ======================== */
+body {
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Fundos por página */
+body.pagina-login {
+  background-image: url("/images/fundo-login.png");
+}
+
+body.pagina-cadastrar {
+  background-image: url("/images/fundo-cadastro.png");
+}
+
+body.pagina-painel {
+  background-image: url("/images/fundo-painel.png");
+}
+
+body.pagina-biblioteca {
+  background-image: url("/images/fundo-biblioteca.png");
+}
+
+/* ======================== */
+/* CAIXA CENTRAL            */
+/* ======================== */
+.caixa {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 20px 12px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 1100px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ======================== */
+/* CABEÇALHO COM LOGO E BOTÕES */
+/* ======================== */
+.cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  height: 90px;
+}
+
+/* Botões no topo */
+.btn-voltar {
+  background: #e67e22;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.btn-voltar:hover {
+  background: #cf6d17;
+}
+
+.btn-sair {
+  background: #e74c3c;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.btn-sair:hover {
+  background: #c0392b;
+}
+
+/* ======================== */
+/* LOGIN & CADASTRO         */
+/* ======================== */
+body.pagina-login .caixa,
+body.pagina-cadastrar .caixa {
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-grande {
+  width: 150px;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 80%;
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  font-size: 18px;
+}
+
+.btn-principal,
+.btn-cadastrar {
+  background: #4a90e2;
+  color: #fff;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 20px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.btn-principal:hover,
+.btn-cadastrar:hover {
+  background: #357abd;
+}
+
+/* Opções extras no login */
+.opcoes-container {
+  display: flex;
+  justify-content: space-between;  
+  align-items: center;             
+  width: 80%;
+  margin: 10px auto;
+}
+
+.lembrar-acesso {
+  display: flex;          
+  align-items: center;    
+  gap: 10px;              
+  font-size: 16px;        
+}
+
+.esqueceu-senha {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.esqueceu-senha:hover {
+  text-decoration: underline;
+}
+
+/* ======================== */
+/* PAINEL                   */
+/* ======================== */
+body.pagina-painel .menu {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 20px;
+  margin-top: 30px;
+  align-items: stretch;
+}
+
+body.pagina-painel .menu button {
+  padding: 25px;
+  font-size: 20px;
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  transition: transform 0.2s;
+}
+
+body.pagina-painel .menu button:hover {
+  transform: scale(1.05);
+}
+
+body.pagina-painel .botao-biblioteca { background: #3498db; }
+body.pagina-painel .botao-agenda     { background: #f39c12; }
+body.pagina-painel .botao-chat       { background: #27ae60; }
+body.pagina-painel .botao-emergencia { background: #e74c3c; }
+
+
+/* ======================== */
+/* BIBLIOTECA               */
+/* ======================== */
+body.pagina-biblioteca .caixa {
+  justify-content: flex-start;
+}
+
+.cartoes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.cartao {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 20px;
+  transition: transform 0.2s;
+  text-align: center;
+  cursor: pointer;
+}
+
+.cartao:hover {
+  transform: translateY(-5px);
+}
+
+.cartao img.icone {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 10px;
+}
+
+.cartao h3 {
+  font-size: 22px;
+  margin-bottom: 5px;
+}
+
+.cartao p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Barrinhas coloridas */
+.cartao-audio { border-top: 5px solid #3498db; }
+.cartao-texto { border-top: 5px solid #2ecc71; }
+.cartao-video { border-top: 5px solid #e67e22; }
+
+
+/* menu: layout responsivo e uniforme para N botões */
+.menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* ajusta automaticamente */
+  gap: 20px;
+  margin-top: 30px;
+  align-items: stretch; /* garante que todos tenham altura igual */
+}
+
+/* estilo base dos botões do menu - bloco com ícone + texto */
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 12px;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  height: 150px;
+  text-align: center;
+  border: none;
+}
+
+/* efeito hover */
+.menu-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+}
+
+/* ícone dentro do botão */
+.icone-menu {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+/* classes de cores (compatíveis com seus nomes anteriores) */
+.botao-biblioteca { background: #3498db; }
+.botao-agenda     { background: #f39c12; }
+.botao-chat       { background: #27ae60; }
+.botao-emergencia { background: #e74c3c; }
+.botao-perfil     { background: #8e44ad; }
+
+/* texto dentro do botão */
+.menu-item span {
+  font-size: 20px;
+  font-weight: 600;
+  display: block;
+}
+
+body.pagina-biblioteca .cartoes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-top: 30px;
+}
+
+body.pagina-biblioteca .cartao {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 20px;
+  transition: transform 0.2s;
+  text-align: center;
+}
+
+body.pagina-biblioteca .cartao:hover {
+  transform: translateY(-5px);
+}
+
+/* ======================== */
+/* CHAT                     */
+/* ======================== */
+body.pagina-chat {
+  background-image: url("/images/fundo-chat.png");
+}
+
+body.pagina-chat .caixa {
+  justify-content: space-between;
+  padding: 20px;
+}
+
+/* Área de mensagens */
+.area-mensagens {
+  flex: 1;
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 20px 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Mensagem enviada */
+.mensagem.enviada {
+  align-self: flex-end;
+  background: #4a90e2;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 12px 12px 0 12px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+/* Mensagem recebida (exemplo futuro) */
+.mensagem.recebida {
+  align-self: flex-start;
+  background: #e5e5ea;
+  color: #333;
+  padding: 10px 15px;
+  border-radius: 12px 12px 12px 0;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+/* Entrada de texto e botão */
+.entrada-mensagem {
+  display: flex;
+  gap: 10px;
+}
+
+.entrada-mensagem input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.entrada-mensagem button {
+  background: #4a90e2;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.entrada-mensagem button:hover {
+  background: #357abd;
+}
+
+/* ======================== */
+/* PÁGINAS DE CONTEÚDO (VÍDEOS, ÁUDIOS, TEXTOS) */
+/* ======================== */
+
+/* Remove o fundo de imagem padrão para as páginas de conteúdo */
+body.pagina-conteudo {
+  background-image: none;
+  background-color: #f0f2f5; /* Um cinza claro de fundo */
+}
+
+/* Ajusta o header para ter o título principal da página */
+.cabecalho-pagina {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.cabecalho-pagina .titulo-principal {
+  font-size: 32px;
+  color: #333;
+}
+
+.cabecalho-pagina .subtitulo {
+  font-size: 18px;
+  color: #777;
+  margin-top: 5px;
+}
+
+/* Container da lista de itens */
+.lista-conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  margin-top: 20px;
+  flex: 1;
+  overflow-y: auto; /* Adiciona scroll se a lista for grande */
+  padding-right: 10px;
+}
+
+/* Estilo base do card de cada item da lista */
+.item-lista {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s ease;
+}
+
+.item-lista:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+/* Ícone circular à esquerda */
+.item-icone {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.item-icone img { width: 30px; }
+
+/* Cores dos ícones */
+.item-lista.video .item-icone { background-color: #e67e22; }
+.item-lista.audio .item-icone { background-color: #3498db; }
+.item-lista.texto .item-icone { background-color: #27ae60; }
+
+/* Informações do item (título, descrição, etc) */
+.item-info {
+  flex-grow: 1;
+  text-align: left;
+}
+.item-info h4 { font-size: 18px; margin-bottom: 4px; }
+.item-info p { font-size: 14px; color: #666; }
+
+/* Metadados (duração, visualizações) */
+.item-meta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 13px;
+  color: #888;
+  margin-top: 8px;
+}
+.item-meta span { display: flex; align-items: center; gap: 5px; }
+.item-meta img { width: 14px; opacity: 0.6; }
+
+/* Tags de categoria */
+.tag-categoria {
+  background: #e74c3c;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+.tag-categoria.azul { background: #3498db; }
+.tag-categoria.verde { background: #27ae60; }
+
+
+/* Botão de Ação (Assistir, Ler Mais) */
+.item-acao {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.btn-assistir {
+  background: #e67e22;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+.btn-assistir:hover { background: #cf6d17; }
+
+.icone-navegar {
+  font-size: 24px;
+  color: #aaa;
+}
+
+/* Área para o botão de Adicionar */
+.area-botao-adicionar {
+  margin-top: 20px;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.btn-adicionar {
+  background: #27ae60;
+  color: #fff;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-adicionar:hover { background: #219d52; }
+
+/* ======================== */
+/* PÁGINA DO PLAYER DE VÍDEO */
+/* ======================== */
+.titulo-video {
+  font-size: 28px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.player-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto; /* Centraliza o player */
+  flex: 1;
+}
+
+.video-responsivo {
+  position: relative;
+  padding-bottom: 56.25%; /* Proporção 16:9 */
+  height: 0;
+  overflow: hidden;
+}
+
+.video-responsivo iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ======================== */
+/* AJUSTES NA PÁGINA DO PLAYER DE VÍDEO */
+/* ======================== */
+body.pagina-player .caixa {
+  width: 90%;                  /* A caixa ocupa 90% da largura da tela */
+  max-width: 1000px;           /* Com um limite máximo de 1000px */
+  height: auto;                /* A ALTURA SE AJUSTA AO CONTEÚDO! */
+  justify-content: flex-start; /* Alinha o conteúdo no topo, em vez de centrar verticalmente */
+}
+
+/* ======================== */
+/* MODAL (POPUP) PARA ADICIONAR VÍDEO */
+/* ======================== */
+
+/* Fundo escurecido que fica atrás do modal */
+.modal-overlay {
+  position: fixed; /* Fica fixo na tela */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: none; /* Começa escondido */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Garante que fique na frente de tudo */
+}
+
+/* A caixa do modal em si */
+.modal-caixa {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  width: 90%;
+  max-width: 500px;
+  text-align: left;
+}
+
+.modal-caixa h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+/* Estilo para os campos do formulário */
+.form-grupo {
+  margin-bottom: 15px;
+}
+
+.form-grupo label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-grupo input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+/* Botões dentro do modal */
+.modal-acoes {
+  margin-top: 25px;
+  text-align: right;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.btn-cancelar {
+  background: #ccc;
+  color: #333;
+}
+
+.btn-salvar {
+  background: #27ae60;
+  color: #fff;
+}
+
+.modal-acoes button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ======================== */
+/* PRÉ-VISUALIZAÇÃO DE VÍDEO NO MODAL (CORRIGIDO) */
+/* ======================== */
+
+.preview-container {
+  width: 100%;
+  background-color: #f0f2f5;
+  border-radius: 8px;
+  border: 1px dashed #ccc;
+  padding: 10px; /* Adiciona um pequeno preenchimento */
+  min-height: 200px;
+  /* As propriedades 'display: flex' foram removidas para permitir que o vídeo se expanda */
+}
+
+.preview-placeholder {
+  color: #888;
+  text-align: center;
+  padding-top: 80px; /* Centraliza o texto verticalmente de forma simples */
+}
+
+/* ======================== */
+/* PLAYER DE ÁUDIO INTERATIVO */
+/* ======================== */
+
+/* Estilo do card quando um áudio está tocando */
+.item-lista.tocando {
+  border-color: #3498db;
+  box-shadow: 0 8px 16px rgba(52, 152, 219, 0.2);
+}
+
+/* Container da barra de progresso (começa escondido) */
+.audio-progresso-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background-color: #e0e0e0;
+  display: none; /* Começa escondido */
+}
+
+/* Barra de progresso que será preenchida */
+.audio-progresso-barra {
+  width: 0%; /* Começa com 0% */
+  height: 100%;
+  background-color: #3498db;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Container do tempo (começa escondido) */
+.audio-tempo {
+  position: absolute;
+  bottom: 12px;
+  right: 15px;
+  font-size: 12px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: none; /* Começa escondido */
+}
+
+/* Mostra os elementos de progresso quando o item está tocando */
+.item-lista.tocando .audio-progresso-container,
+.item-lista.tocando .audio-tempo {
+  display: block;
+}
+
+/* Ajusta o padding para a barra de progresso não sobrepor o conteúdo */
+.item-lista .item-info, .item-lista .item-acao, .item-lista .item-icone {
+  position: relative;
+  z-index: 2;
+}
+.item-lista {
+  position: relative; /* Necessário para o posicionamento absoluto da barra */
+}
+
+/* Adicione ao final do estilo.css */
+#player-youtube-escondido {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+
+/* Adicione estas classes de cores ao seu estilo.css */
+
+.tag-categoria.seguranca { background-color: #e74c3c; } /* Vermelho */
+.tag-categoria.privacidade { background-color: #3498db; } /* Azul */
+.tag-categoria.tecnologia { background-color: #9b59b6; } /* Roxo */
+.tag-categoria.geral { background-color: #7f8c8d; } /* Cinza */
+
+/* ======================== */
+/* CORREÇÃO DO PLAYER DE ÁUDIO */
+/* ======================== */
+
+/* Define um tamanho fixo para o ícone de volume dentro do card */
+.item-lista.audio .item-acao .icone-volume {
+  width: 32px;
+  height: 32px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+/* Efeito visual ao passar o mouse */
+.item-lista.audio .item-acao .icone-volume:hover {
+  opacity: 1;
+}
+
+/* ======================== */
+/* PÁGINA DE DETALHE DO TEXTO */
+/* ======================== */
+.artigo-container {
+  text-align: left;
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 20px;
+}
+
+.titulo-artigo {
+  font-size: 28px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.meta-artigo {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.conteudo-artigo h2 {
+  font-size: 22px;
+  margin-top: 25px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+
+.conteudo-artigo h3 {
+  font-size: 18px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.conteudo-artigo p, .conteudo-artigo li {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.conteudo-artigo ul {
+  list-style-position: inside;
+  padding-left: 10px;
+}
+
+/* ======================== */
+/* MODAL DE EDIÇÃO GRANDE (TEXTOS) */
+/* ======================== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #f0f2f5; /* Fundo cinza claro, não mais escuro */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow-y: auto; /* Permite rolagem se a tela for pequena */
+  padding: 40px;
+}
+
+/* Nova caixa principal do modal */
+.modal-caixa-grande {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 1200px;
+  height: 90vh; /* Ocupa 90% da altura da tela */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Formulário que organiza as colunas e o rodapé */
+.form-duas-colunas {
+  display: grid;
+  grid-template-columns: 350px 1fr; /* Coluna esquerda fixa, direita flexível */
+  gap: 30px;
+  padding: 30px;
+  flex: 1; /* Faz o formulário ocupar o espaço disponível */
+  overflow: hidden;
+}
+
+.modal-coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-titulo {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.form-grupo label {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.form-grupo input, .form-grupo select {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Faz o editor Trix ocupar todo o espaço vertical disponível */
+.form-grupo-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+trix-editor {
+  flex: 1; /* Magica para o editor crescer */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Rodapé com os botões de ação */
+.modal-acoes-rodape {
+  padding: 20px 30px;
+  border-top: 1px solid #eee;
+  background: #fff; /* Fundo branco para combinar com o resto */
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  border-radius: 0 0 12px 12px;
+  grid-column: 1 / -1;
+}
+
+.modal-acoes-rodape button {
+  padding: 10px 20px; /* Padding horizontal reduzido */
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Adicione estas classes de cores para as tags de texto */
+
+.tag-categoria.iniciante { background-color: #27ae60; } /* Verde */
+.tag-categoria.intermediario { background-color: #f39c12; } /* Laranja */
+.tag-categoria.avancado { background-color: #e74c3c; } /* Roxo */
+
+/* ======================== */
+/* AGENDA                   */
+/* ======================== */
+
+/* Fundo exclusivo da agenda */
+body.pagina-agenda {
+  background-image: url("/images/fundo-chat.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+body.pagina-agenda .caixa {
+  justify-content: flex-start;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 20px 12px rgba(0,0,0,0.1);
+  width: 1100px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Conteúdo da agenda */
+.conteudo-agenda {
+  display: flex;
+  flex-direction: column; 
+  gap: 20px;
+  margin-top: 20px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Calendário */
+.calendario {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 600px;   
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.calendario th {
+  background: #3498db;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.calendario td {
+  border: 1px solid #ddd;
+  width: 40px;
+  height: 60px;
+  text-align: center;
+  vertical-align: top;
+  padding: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.calendario td:hover {
+  background: #ecf0f1;
+}
+
+.calendario .hoje {
+  background: #f39c12;
+  color: white;
+  font-weight: bold;
+}
+
+/* Lista de compromissos */
+.lista-agenda {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  margin-top: 10px;
+}
+
+.lista-agenda h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #333;
+}
+
+.lista-agenda ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.lista-agenda li {
+  font-size: 16px;
+  margin-bottom: 10px;
+  padding: 8px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}

@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.projeto.sistema.modelo.Biblioteca;
 import com.projeto.sistema.repositorio.BibliotecaRepositorio;
-import com.projeto.sistema.repositorio.UsuarioRepositorio; 
+import com.projeto.sistema.repositorio.RepositorioUsuarios; 
 
 @Controller
 public class BibliotecaControle {
@@ -22,7 +22,7 @@ public class BibliotecaControle {
     private BibliotecaRepositorio bibliotecaRepositorio;
     
     @Autowired
-    private UsuarioRepositorio usuarioRepositorio; 
+    private RepositorioUsuarios RepositorioUsuarios; 
 
     /**
      * LISTA todo o conteúdo da biblioteca para todos os usuários.
@@ -65,7 +65,7 @@ public class BibliotecaControle {
 
         if (biblioteca.getCadastrador() == null) {
 
-            usuarioRepositorio.findById(1L).ifPresent(biblioteca::setCadastrador);
+            RepositorioUsuarios.findById(1L).ifPresent(biblioteca::setCadastrador);
         }
         
         if (biblioteca.getId() == null) {

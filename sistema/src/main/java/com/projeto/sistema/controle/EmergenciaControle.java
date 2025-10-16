@@ -13,7 +13,7 @@ import com.projeto.sistema.modelo.Emergencia;
 import com.projeto.sistema.modelo.StatusEmergencia;
 import com.projeto.sistema.modelo.Usuario;
 import com.projeto.sistema.repositorio.EmergenciaRepositorio;
-import com.projeto.sistema.repositorio.UsuarioRepositorio;
+import com.projeto.sistema.repositorio.RepositorioUsuarios;
 
 @RestController
 public class EmergenciaControle {
@@ -22,7 +22,7 @@ public class EmergenciaControle {
     private EmergenciaRepositorio emergenciaRepositorio;
 
     @Autowired
-    private UsuarioRepositorio usuarioRepositorio;
+    private RepositorioUsuarios RepositorioUsuarios;
 
     // DTO simples para receber a descrição opcional do Postman
     public static class EmergenciaRequest {
@@ -34,7 +34,7 @@ public class EmergenciaControle {
             @PathVariable Long usuarioId,
             @RequestBody(required = false) EmergenciaRequest request) {
 
-        Usuario usuario = usuarioRepositorio.findById(usuarioId)
+        Usuario usuario = RepositorioUsuarios.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
         Emergencia novaEmergencia = new Emergencia();
