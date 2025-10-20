@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Conecta Idoso - Painel do Administrador</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="pagina-painel">
+  <div class="caixa">
+
+    <!-- Cabeçalho -->
+    <div class="cabecalho">
+      <img src="assets/logos/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
+      <button class="btn-sair" onclick="window.location.href='login.html'">Sair</button>
+    </div>
+
+    <h2>Painel do Administrador</h2>
+
+    <!-- Menu principal (sem botão de emergência) -->
+    <div class="menu">
+      <button class="menu-item botao-biblioteca" onclick="window.location.href='biblioteca.html'">
+        <img class="icone-menu" src="assets/icones/biblioteca.png" alt="Biblioteca">
+        <span>Biblioteca</span>
+      </button>
+
+      <button class="menu-item botao-agenda" onclick="window.location.href='agenda.html'">
+        <img class="icone-menu" src="assets/icones/agenda.png" alt="Agenda">
+        <span>Agenda</span>
+      </button>
+
+      <button class="menu-item botao-chat" onclick="window.location.href='chat.html'">
+        <img class="icone-menu" src="assets/icones/chat.png" alt="Chat">
+        <span>Chat</span>
+      </button>
+
+      <button class="menu-item botao-perfil" onclick="window.location.href='perfil.html'">
+        <img class="icone-menu" src="assets/icones/perfil.png" alt="Perfil">
+        <span>Perfil</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    window.onload = () => {
+      const isAdmin = localStorage.getItem("isAdmin");
+      if (isAdmin !== "true") {
+        alert("Acesso restrito! Apenas administradores podem acessar esta página.");
+        window.location.href = "login.html";
+      }
+    };
+  </script>
+</body>
+</html>

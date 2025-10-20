@@ -1,19 +1,113 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Conecta Idoso - Entrada</title>
-    <link rel="stylesheet" href="estilo.css">
+  <meta charset="UTF-8">
+  <title>Conecta Idoso - Cadastro</title>
+  <link rel="stylesheet" href="estilo.css">
 </head>
 <body class="pagina-cadastrar">
-    <div class="caixa">
-        <img src="assets/logos/logo-grande.jpeg" alt="Conecta Idoso" class="logo-grande">
-        <h1>Cadastrar</h1>
-        <input type="text" id="nome" placeholder="Digite o seu nome">
-        <input type="text" id="usuario" placeholder="Digite seu telefone">
-        <input type="password" id="senha" placeholder="Crie uma senha">
-        <button class="btn-cadastrar" onclick="realizarCadastro()">Cadastrar</button>
+  <div class="caixa">
+    
+    <!-- Cabeçalho padrão (igual agenda) -->
+    <div class="cabecalho">
+      <button class="btn-voltar" onclick="window.location.href='login.html'">Voltar</button>
+      <img src="assets/logos/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
     </div>
-    <script src="app.js"></script>
+
+    <h1>Cadastrar</h1>
+
+    <!-- Campos padrão (usuário comum) -->
+    <div id="camposUsuario">
+      <input type="text" id="nome" placeholder="Digite o seu nome">
+      <input type="text" id="usuario" placeholder="Digite seu telefone">
+      <input type="password" id="senha" placeholder="Crie uma senha">
+    </div>
+
+    <!-- Toggle de administrador -->
+    <div class="toggle-container">
+      <label class="switch">
+        <input type="checkbox" id="isAdmin" onchange="mostrarCamposAdmin()">
+        <span class="slider round"></span>
+      </label>
+      <span>Administrador</span>
+    </div>
+
+    <!-- Campos do administrador -->
+    <div id="camposAdmin" style="display: none;">
+      <div class="coluna">
+        <h3>Informações do Idoso</h3>
+        <input type="text" id="nomeIdoso" placeholder="Nome do idoso">
+        <input type="text" id="telefoneIdoso" placeholder="Telefone do idoso">
+        <input type="text" id="enderecoIdoso" placeholder="Endereço do idoso">
+      </div>
+
+      <div class="coluna">
+        <h3>Informações do Administrador</h3>
+        <input type="text" id="nomeAdm" placeholder="Seu nome (administrador)">
+        <input type="text" id="enderecoAdm" placeholder="Seu endereço">
+      </div>
+    </div>
+
+    <button class="btn-cadastrar" onclick="realizarCadastro()">Cadastrar</button>
+  </div>
+
+  <script>
+    function mostrarCamposAdmin() {
+      const check = document.getElementById("isAdmin").checked;
+      const camposUsuario = document.getElementById("camposUsuario");
+      const camposAdmin = document.getElementById("camposAdmin");
+
+      if (check) {
+        camposUsuario.style.display = "none";
+        camposAdmin.style.display = "flex";
+      } else {
+        camposUsuario.style.display = "block";
+        camposAdmin.style.display = "none";
+      }
+    }
+
+    function realizarCadastro() {
+      const isAdmin = document.getElementById("isAdmin").checked;
+
+      if (isAdmin) {
+        const nomeIdoso = document.getElementById("nomeIdoso").value;
+        const telefoneIdoso = document.getElementById("telefoneIdoso").value;
+        const enderecoIdoso = document.getElementById("enderecoIdoso").value;
+        const nomeAdm = document.getElementById("nomeAdm").value;
+        const enderecoAdm = document.getElementById("enderecoAdm").value;
+
+        if (!nomeIdoso || !telefoneIdoso || !enderecoIdoso || !nomeAdm || !enderecoAdm) {
+          alert("Por favor, preencha todos os campos do administrador e do idoso.");
+          return;
+        }
+
+        localStorage.setItem("isAdmin", true);
+        localStorage.setItem("nomeIdoso", nomeIdoso);
+        localStorage.setItem("telefoneIdoso", telefoneIdoso);
+        localStorage.setItem("enderecoIdoso", enderecoIdoso);
+        localStorage.setItem("nomeAdm", nomeAdm);
+        localStorage.setItem("enderecoAdm", enderecoAdm);
+
+        alert("Cadastro de administrador realizado com sucesso!");
+        window.location.href = "painel-adm.html";
+      } else {
+        const nome = document.getElementById("nome").value;
+        const usuario = document.getElementById("usuario").value;
+        const senha = document.getElementById("senha").value;
+
+        if (!nome || !usuario || !senha) {
+          alert("Por favor, preencha todos os campos.");
+          return;
+        }
+
+        localStorage.setItem("usuarioCadastrado", usuario);
+        localStorage.setItem("senhaCadastrada", senha);
+        localStorage.setItem("isAdmin", false);
+
+        alert("Cadastro realizado com sucesso!");
+        window.location.href = "painel.html";
+      }
+    }
+  </script>
 </body>
 </html>

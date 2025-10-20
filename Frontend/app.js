@@ -9,37 +9,50 @@ function Cadastrar() {
 
 /* Criada a função para salvar os dados de novos usuários */
 function realizarCadastro() {
-    const usuario = document.getElementById("usuario").value;
-    const senha = document.getElementById("senha").value;
+  const usuario = document.getElementById("usuario").value;
+  const senha = document.getElementById("senha").value;
+  const isAdmin = document.getElementById("isAdmin").checked;
 
-    if (usuario && senha) {
-        localStorage.setItem("usuarioCadastrado", usuario);
-        localStorage.setItem("senhaCadastrada", senha);
+  if (usuario && senha) {
+    localStorage.setItem("usuarioCadastrado", usuario);
+    localStorage.setItem("senhaCadastrada", senha);
+    localStorage.setItem("isAdmin", isAdmin);
 
-        alert("Cadastro realizado com sucesso! \n Você será redirecionado para o painel.");
-        window.location.href = "painel.html";
+    alert("Cadastro realizado com sucesso!");
+
+    if (isAdmin) {
+      window.location.href = "painel-adm.html";
     } else {
-        alert("Por favor, preencha todos os campos.");
+      window.location.href = "painel.html";
     }
+  } else {
+    alert("Por favor, preencha todos os campos.");
+  }
 }
 
 /* Criada a função de login e senha, onde tem verificação de dados */
 function entrar() {
-    const usuarioInput = document.getElementById("usuario").value;
-    const senhaInput = document.getElementById("senha").value;
+  const usuarioInput = document.getElementById("usuario").value;
+  const senhaInput = document.getElementById("senha").value;
 
-    const usuarioCadastrado = localStorage.getItem("usuarioCadastrado");
-    const senhaCadastrada = localStorage.getItem("senhaCadastrada");
+  const usuarioCadastrado = localStorage.getItem("usuarioCadastrado");
+  const senhaCadastrada = localStorage.getItem("senhaCadastrada");
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
 
-    if (
-        (usuarioInput === usuarioCadastrado && senhaInput === senhaCadastrada) ||
-        (usuarioInput === "teste" && senhaInput === "1234")
-    ) {
-        window.location.href = "painel.html";
+  if (
+    (usuarioInput === usuarioCadastrado && senhaInput === senhaCadastrada) ||
+    (usuarioInput === "teste" && senhaInput === "1234")
+  ) {
+    if (isAdmin) {
+      window.location.href = "painel-adm.html";
     } else {
-        alert("Usuário ou senha incorretos!");
+      window.location.href = "painel.html";
     }
+  } else {
+    alert("Usuário ou senha incorretos!");
+  }
 }
+
 
 /* Criada a função de sair do webApp */
 function sair() {

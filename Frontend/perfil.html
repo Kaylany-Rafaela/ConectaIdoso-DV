@@ -2,38 +2,100 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Meu Perfil</title>
+  <title>Conecta Idoso - Perfil</title>
   <link rel="stylesheet" href="estilo.css">
 </head>
-<body>
-  <header>
-    <button class="voltar" onclick="history.back()">←</button>
-    <h1>Meu Perfil</h1>
-  </header>
+<body class="pagina-perfil">
+  <div class="caixa">
+    <!-- Cabeçalho -->
+    <div class="cabecalho">
+      <button class="btn-voltar" onclick="voltarPainel()">Voltar</button>
+      <img src="assets/logos/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
+      <button class="btn-sair" onclick="window.location.href='login.html'">Sair</button>
+    </div>
 
-  <main>
-    <section class="perfil-card">
-      <div class="avatar">👤</div>
-      <h2>José da Silva</h2>
-      <button class="btn-primario">✎ Editar Perfil</button>
-    </section>
+    <!-- Conteúdo principal -->
+    <div class="conteudo-perfil">
+      <h2>Perfil Cadastrado</h2>
 
-    <section class="info">
-      <h3>Informações Pessoais</h3>
-      <p><strong>Nome:</strong> José da Silva</p>
-      <p><strong>Telefone:</strong> (11) 99999-1234</p>
-      <p><strong>Endereço:</strong> Rua das Flores, 123 - São Paulo, SP</p>
-    </section>
+      <!-- Bloco do Idoso -->
+      <div class="bloco-perfil bloco-idoso">
+        <h3>👴 Informações do Idoso</h3>
+        <label>Nome:</label>
+        <input type="text" id="nomeIdosoPerfil" disabled>
 
-    <section class="info">
-      <h3>Contato de Emergência</h3>
-      <p><strong>Pessoa:</strong> Maria Silva - (11) 99999-1234</p>
-    </section>
+        <label>Telefone:</label>
+        <input type="text" id="telefoneIdosoPerfil" disabled>
 
-    <section class="info">
-      <h3>Segurança</h3>
-      <button class="btn-primario">🔒 Alterar Senha</button>
-    </section>
-  </main>
+        <label>Endereço:</label>
+        <input type="text" id="enderecoIdosoPerfil" disabled>
+      </div>
+
+      <!-- Bloco do Administrador -->
+      <div class="bloco-perfil bloco-admin">
+        <h3>👤 Informações do Administrador</h3>
+        <label>Nome:</label>
+        <input type="text" id="nomeAdmPerfil" disabled>
+
+        <label>Telefone:</label>
+        <input type="text" id="telefoneAdmPerfil" disabled>
+
+        <label>Endereço:</label>
+        <input type="text" id="enderecoAdmPerfil" disabled>
+      </div>
+
+      <!-- Botões -->
+      <div class="acoes-perfil">
+        <button class="btn-editar" id="btnEditar" onclick="editarInformacoes()">Editar Informações</button>
+        <button class="btn-salvar" id="btnSalvar" style="display:none;" onclick="salvarInformacoes()">Salvar Alterações</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Função de voltar inteligente
+    function voltarPainel() {
+      const isAdmin = localStorage.getItem("isAdmin") === "true";
+      if (isAdmin) {
+        window.location.href = "painel-adm.html";
+      } else {
+        window.location.href = "painel.html";
+      }
+    }
+
+    // Carrega dados do localStorage
+    window.onload = () => {
+      document.getElementById("nomeIdosoPerfil").value = localStorage.getItem("nomeIdoso") || "";
+      document.getElementById("telefoneIdosoPerfil").value = localStorage.getItem("telefoneIdoso") || "";
+      document.getElementById("enderecoIdosoPerfil").value = localStorage.getItem("enderecoIdoso") || "";
+
+      document.getElementById("nomeAdmPerfil").value = localStorage.getItem("nomeAdm") || "";
+      document.getElementById("telefoneAdmPerfil").value = localStorage.getItem("telefoneAdm") || "";
+      document.getElementById("enderecoAdmPerfil").value = localStorage.getItem("enderecoAdm") || "";
+    };
+
+    // Habilita edição
+    function editarInformacoes() {
+      document.querySelectorAll(".bloco-perfil input").forEach(input => input.disabled = false);
+      document.getElementById("btnEditar").style.display = "none";
+      document.getElementById("btnSalvar").style.display = "inline-block";
+    }
+
+    // Salva alterações
+    function salvarInformacoes() {
+      localStorage.setItem("nomeIdoso", document.getElementById("nomeIdosoPerfil").value);
+      localStorage.setItem("telefoneIdoso", document.getElementById("telefoneIdosoPerfil").value);
+      localStorage.setItem("enderecoIdoso", document.getElementById("enderecoIdosoPerfil").value);
+      localStorage.setItem("nomeAdm", document.getElementById("nomeAdmPerfil").value);
+      localStorage.setItem("telefoneAdm", document.getElementById("telefoneAdmPerfil").value);
+      localStorage.setItem("enderecoAdm", document.getElementById("enderecoAdmPerfil").value);
+
+      document.querySelectorAll(".bloco-perfil input").forEach(input => input.disabled = true);
+      document.getElementById("btnEditar").style.display = "inline-block";
+      document.getElementById("btnSalvar").style.display = "none";
+
+      alert("Informações atualizadas com sucesso!");
+    }
+  </script>
 </body>
 </html>
