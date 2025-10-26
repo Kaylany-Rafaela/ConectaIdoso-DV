@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <title>Conecta Idoso - Textos</title>
   <link rel="stylesheet" href="estilo.css">
   <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
 </head>
+
 <body class="pagina-conteudo">
   <div class="caixa">
     <div class="cabecalho">
@@ -53,7 +55,7 @@
             <trix-editor input="texto-conteudo"></trix-editor>
           </div>
         </div>
-        
+
         <div class="modal-acoes-rodape">
           <button type="button" class="btn-cancelar" id="btn-fechar-modal">Cancelar</button>
           <button type="submit" class="btn-salvar">Salvar</button>
@@ -88,25 +90,35 @@
       });
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const modal = document.getElementById('modal-adicionar-texto');
       const btnAbrir = document.getElementById('btn-abrir-modal');
       const btnFechar = document.getElementById('btn-fechar-modal');
       const form = document.getElementById('form-texto');
       const trixEditor = document.querySelector("trix-editor");
 
+
+    // 🔒 SOMENTE ADMINISTRADOR VÊ O BOTÃO E O MODAL
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
+    if (!isAdmin) {
+      const botaoAdicionar = document.querySelector(".btn-adicionar");
+      if (botaoAdicionar) botaoAdicionar.style.display = "none";
+      if (modal) modal.remove();
+    }
+      
+
       if (!sessionStorage.getItem('meusTextos')) {
         const textosIniciais = [
-          { 
-            id: 1, 
-            titulo: 'Guia básico do smartphone', 
+          {
+            id: 1,
+            titulo: 'Guia básico do smartphone',
             descricao: 'Aprenda a usar as funções básicas do seu celular',
             tag: 'Iniciante',
             conteudo: '<div><h2>Como usar seu smartphone - Guia básico</h2><h3>1. Ligando e desligando...</h3></div>'
           },
-          { 
-            id: 2, 
-            titulo: 'Aplicativos úteis para o dia a dia', 
+          {
+            id: 2,
+            titulo: 'Aplicativos úteis para o dia a dia',
             descricao: 'Conheça aplicativos que podem facilitar sua vida',
             tag: 'Intermediário',
             conteudo: '<div><h2>Aplicativos que Ajudam</h2><h3>1. Transporte</h3><ul><li>Uber, 99</li></ul><h3>2. Bancos</h3><ul><li>Aplicativo do seu banco para ver saldo e pagar contas.</li></ul></div>'
@@ -118,9 +130,9 @@
       btnAbrir.addEventListener('click', () => { modal.style.display = 'flex'; });
       btnFechar.addEventListener('click', () => { modal.style.display = 'none'; });
 
-      form.addEventListener('submit', function(event) {
+      form.addEventListener('submit', function (event) {
         event.preventDefault();
-        
+
         const titulo = document.getElementById('texto-titulo').value;
         const descricao = document.getElementById('texto-desc').value;
         const tag = document.getElementById('texto-tag').value;
@@ -142,4 +154,5 @@
     });
   </script>
 </body>
+
 </html>

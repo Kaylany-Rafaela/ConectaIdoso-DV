@@ -14,11 +14,11 @@
       <button class="btn-sair" onclick="window.location.href='login.html'">Sair</button>
     </div>
 
-    <!-- Conteúdo principal -->
-    <div class="conteudo-perfil">
-      <h2>Perfil Cadastrado</h2>
+    <h2>Perfil Cadastrado</h2>
 
-      <!-- Bloco do Idoso -->
+    <!-- Conteúdo -->
+    <div class="conteudo-perfil">
+      <!-- Bloco Idoso -->
       <div class="bloco-perfil bloco-idoso">
         <h3>👴 Informações do Idoso</h3>
         <label>Nome:</label>
@@ -31,7 +31,7 @@
         <input type="text" id="enderecoIdosoPerfil" disabled>
       </div>
 
-      <!-- Bloco do Administrador -->
+      <!-- Bloco Administrador -->
       <div class="bloco-perfil bloco-admin">
         <h3>👤 Informações do Administrador</h3>
         <label>Nome:</label>
@@ -53,7 +53,7 @@
   </div>
 
   <script>
-    // Função de voltar inteligente
+    // Voltar para o painel correto
     function voltarPainel() {
       const isAdmin = localStorage.getItem("isAdmin") === "true";
       if (isAdmin) {
@@ -63,7 +63,7 @@
       }
     }
 
-    // Carrega dados do localStorage
+    // Carrega dados salvos
     window.onload = () => {
       document.getElementById("nomeIdosoPerfil").value = localStorage.getItem("nomeIdoso") || "";
       document.getElementById("telefoneIdosoPerfil").value = localStorage.getItem("telefoneIdoso") || "";
@@ -74,14 +74,14 @@
       document.getElementById("enderecoAdmPerfil").value = localStorage.getItem("enderecoAdm") || "";
     };
 
-    // Habilita edição
+    // Habilitar edição
     function editarInformacoes() {
       document.querySelectorAll(".bloco-perfil input").forEach(input => input.disabled = false);
       document.getElementById("btnEditar").style.display = "none";
       document.getElementById("btnSalvar").style.display = "inline-block";
     }
 
-    // Salva alterações
+    // Salvar alterações
     function salvarInformacoes() {
       localStorage.setItem("nomeIdoso", document.getElementById("nomeIdosoPerfil").value);
       localStorage.setItem("telefoneIdoso", document.getElementById("telefoneIdosoPerfil").value);

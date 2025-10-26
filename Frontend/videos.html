@@ -4,27 +4,34 @@
   <meta charset="UTF-8">
   <title>Conecta Idoso - Vídeos</title>
   <link rel="stylesheet" href="estilo.css">
+  <!-- Importa o controle global -->
+  <script src="app.js" defer></script>
 </head>
 <body class="pagina-conteudo">
   <div class="caixa">
+    <!-- Cabeçalho -->
     <div class="cabecalho">
       <button class="btn-voltar" onclick="window.location.href='biblioteca.html'">Voltar</button>
       <img src="assets/logos/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
       <button class="btn-sair" onclick="window.location.href='login.html'">Sair</button>
     </div>
 
+    <!-- Título -->
     <div class="cabecalho-pagina">
       <h1 class="titulo-principal">Vídeos</h1>
       <p class="subtitulo">Escolha um vídeo para assistir:</p>
     </div>
 
+    <!-- Lista de vídeos -->
     <main class="lista-conteudo" id="lista-de-videos"></main>
 
+    <!-- Botão de adicionar (só aparece para administrador) -->
     <div class="area-botao-adicionar">
       <button class="btn-adicionar" id="btn-abrir-modal">+ Adicionar Vídeo</button>
     </div>
   </div>
 
+  <!-- Modal de adicionar vídeo -->
   <div class="modal-overlay" id="modal-adicionar-video">
     <div class="modal-caixa-grande">
       <form id="form-video" class="form-duas-colunas">
@@ -52,7 +59,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="modal-acoes-rodape">
           <button type="button" class="btn-cancelar" id="btn-fechar-modal">Cancelar</button>
           <button type="submit" class="btn-salvar">Salvar</button>
@@ -61,6 +68,7 @@
     </div>
   </div>
 
+  <!-- Script local da página -->
   <script>
     function extrairVideoID(url) {
       try {
@@ -84,7 +92,7 @@
               <p>${video.descricao}</p>
               <div class="item-meta">
                 <span><img src="assets/icones/tempo.png" alt="Duração"> --:--</span>
-                </div>
+              </div>
             </div>
             <div class="item-acao">
               <a href="video-player.html?video=${video.id}&titulo=${encodeURIComponent(video.titulo)}" class="btn-assistir">Assistir</a>
@@ -94,26 +102,18 @@
         listaContainer.innerHTML += videoHTML;
       });
     }
-    
+
+    // Modal de adicionar vídeo
     document.addEventListener('DOMContentLoaded', function() {
       const modal = document.getElementById('modal-adicionar-video');
       const btnAbrir = document.getElementById('btn-abrir-modal');
       const btnFechar = document.getElementById('btn-fechar-modal');
       const form = document.getElementById('form-video');
-      
       const linkInput = document.getElementById('video-link');
       const previewContainer = document.getElementById('video-preview-container');
       const placeholder = '<p class="preview-placeholder">A pré-visualização do vídeo aparecerá aqui.</p>';
 
-      if (!sessionStorage.getItem('meusVideos')) {
-        const videosIniciais = [
-          { titulo: 'Como usar o WhatsApp', descricao: 'Aprenda a usar o WhatsApp de forma simples e fácil', id: 'lJ_Y9OfDNOo' },
-          { titulo: 'Fazendo videochamadas', descricao: 'Como fazer chamadas de vídeo no seu smartphone', id: 'k7aOj4f48Is' }
-        ];
-        sessionStorage.setItem('meusVideos', JSON.stringify(videosIniciais));
-      }
-
-      btnAbrir.addEventListener('click', () => { modal.style.display = 'flex'; });
+      btnAbrir.addEventListener('click', () => modal.style.display = 'flex');
       btnFechar.addEventListener('click', () => {
         modal.style.display = 'none';
         previewContainer.innerHTML = placeholder;
@@ -123,16 +123,9 @@
       linkInput.addEventListener('input', function() {
         const url = linkInput.value;
         const videoId = extrairVideoID(url);
-
-        if (videoId) {
-          previewContainer.innerHTML = `
-            <div class="video-responsivo">
-              <iframe src="https://www.youtube.com/embed/${videoId}" title="Pré-visualização" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-          `;
-        } else {
-          previewContainer.innerHTML = placeholder;
-        }
+        previewContainer.innerHTML = videoId
+          ? `<div class="video-responsivo"><iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>`
+          : placeholder;
       });
 
       form.addEventListener('submit', function(event) {
@@ -141,14 +134,10 @@
         const descricao = document.getElementById('video-desc').value;
         const link = linkInput.value;
         const videoID = extrairVideoID(link);
-        
-        if (!videoID) {
-          alert('Por favor, insira um link válido do YouTube.');
-          return;
-        }
+        if (!videoID) return alert('Por favor, insira um link válido do YouTube.');
 
         const videosAtuais = JSON.parse(sessionStorage.getItem('meusVideos')) || [];
-        videosAtuais.push({ titulo: titulo, descricao: descricao, id: videoID });
+        videosAtuais.push({ titulo, descricao, id: videoID });
         sessionStorage.setItem('meusVideos', JSON.stringify(videosAtuais));
 
         btnFechar.click();

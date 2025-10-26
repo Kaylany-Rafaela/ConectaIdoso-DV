@@ -151,3 +151,35 @@ function gerarCalendario() {
 
 // Inicializa ao carregar a página
 document.addEventListener("DOMContentLoaded", gerarCalendario);
+
+
+
+
+/* ==========================================================
+   BLOQUEIO DE BOTÕES DE CADASTRO / ADIÇÃO PARA NÃO-ADMINS
+   ========================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
+
+  // Seleciona todos os botões de adicionar
+  const botoesAdicionar = document.querySelectorAll(".btn-adicionar");
+
+  botoesAdicionar.forEach(botao => {
+    if (!isAdmin) {
+      // 🔹 Esconde o botão
+      botao.style.display = "none";
+
+      // 🔹 Desativa o botão completamente
+      botao.disabled = true;
+
+      // 🔹 Remove listeners antigos (protege contra cliques forçados)
+      const clone = botao.cloneNode(true);
+      botao.parentNode.replaceChild(clone, botao);
+    }
+  });
+
+  // 🔹 Proteção contra tentativa de abrir modal manualmente
+  if (!isAdmin) {
+    window.abrirModalAdicionar = () => alert("Ação não permitida para usuários comuns.");
+  }
+});

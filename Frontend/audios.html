@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <title>Conecta Idoso - Áudios</title>
   <link rel="stylesheet" href="estilo.css">
 </head>
+
 <body class="pagina-conteudo">
   <div class="caixa">
     <div class="cabecalho">
@@ -63,7 +65,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="modal-acoes-rodape">
           <button type="button" class="btn-cancelar" id="btn-fechar-modal">Cancelar</button>
           <button type="submit" class="btn-salvar">Salvar</button>
@@ -82,9 +84,9 @@
     let progressInterval;
 
     function onYouTubeIframeAPIReady() {
-      player = new YT.Player('player-youtube-escondido', { height: '0', width: '0', events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }});
+      player = new YT.Player('player-youtube-escondido', { height: '0', width: '0', events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange } });
     }
-    function onPlayerReady(event) {}
+    function onPlayerReady(event) { }
     function onPlayerStateChange(event) {
       if (event.data == YT.PlayerState.ENDED) {
         resetarItem(itemTocandoAtualmente);
@@ -126,70 +128,70 @@
       });
       configurarInteracoes();
     }
-    
+
     function configurarInteracoes() {
-        const todosOsAudios = document.querySelectorAll('.item-lista.audio');
-        todosOsAudios.forEach(item => {
-            if (item.classList.contains('interativo')) return; 
-            item.classList.add('interativo');
-            const videoId = item.dataset.videoId;
-            const iconeImg = item.querySelector('.item-icone img');
-            item.addEventListener('click', function() {
-                if(!player || typeof player.getPlayerState !== 'function') return;
-                if (item === itemTocandoAtualmente) {
-                    const playerState = player.getPlayerState();
-                    if (playerState === YT.PlayerState.PLAYING) { player.pauseVideo(); iconeImg.src = 'assets/icones/play-audio.png'; }
-                    else { player.playVideo(); iconeImg.src = 'assets/icones/pause.png'; }
-                } else {
-                    resetarItem(itemTocandoAtualmente);
-                    itemTocandoAtualmente = item;
-                    player.loadVideoById(videoId);
-                    iconeImg.src = 'assets/icones/pause.png';
-                    item.classList.add('tocando');
-                    if (progressInterval) clearInterval(progressInterval);
-                    progressInterval = setInterval(atualizarProgresso, 250);
-                }
-            });
-            const iconeVolume = item.querySelector('.icone-volume');
-            iconeVolume.addEventListener('click', function(e) {
-                e.stopPropagation();
-                if(player && typeof player.isMuted === 'function') {
-                    if (player.isMuted()) { player.unMute(); iconeVolume.src = 'assets/icones/volume.png'; }
-                    else { player.mute(); iconeVolume.src = 'assets/icones/volume-mute.png'; }
-                }
-            });
-            const progressoContainer = item.querySelector('.audio-progresso-container');
-            progressoContainer.addEventListener('click', function(e) {
-                if (item !== itemTocandoAtualmente || !player || typeof player.getDuration !== 'function') return;
-                const porcentagem = e.offsetX / progressoContainer.clientWidth;
-                player.seekTo(player.getDuration() * porcentagem, true);
-            });
+      const todosOsAudios = document.querySelectorAll('.item-lista.audio');
+      todosOsAudios.forEach(item => {
+        if (item.classList.contains('interativo')) return;
+        item.classList.add('interativo');
+        const videoId = item.dataset.videoId;
+        const iconeImg = item.querySelector('.item-icone img');
+        item.addEventListener('click', function () {
+          if (!player || typeof player.getPlayerState !== 'function') return;
+          if (item === itemTocandoAtualmente) {
+            const playerState = player.getPlayerState();
+            if (playerState === YT.PlayerState.PLAYING) { player.pauseVideo(); iconeImg.src = 'assets/icones/play-audio.png'; }
+            else { player.playVideo(); iconeImg.src = 'assets/icones/pause.png'; }
+          } else {
+            resetarItem(itemTocandoAtualmente);
+            itemTocandoAtualmente = item;
+            player.loadVideoById(videoId);
+            iconeImg.src = 'assets/icones/pause.png';
+            item.classList.add('tocando');
+            if (progressInterval) clearInterval(progressInterval);
+            progressInterval = setInterval(atualizarProgresso, 250);
+          }
         });
+        const iconeVolume = item.querySelector('.icone-volume');
+        iconeVolume.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (player && typeof player.isMuted === 'function') {
+            if (player.isMuted()) { player.unMute(); iconeVolume.src = 'assets/icones/volume.png'; }
+            else { player.mute(); iconeVolume.src = 'assets/icones/volume-mute.png'; }
+          }
+        });
+        const progressoContainer = item.querySelector('.audio-progresso-container');
+        progressoContainer.addEventListener('click', function (e) {
+          if (item !== itemTocandoAtualmente || !player || typeof player.getDuration !== 'function') return;
+          const porcentagem = e.offsetX / progressoContainer.clientWidth;
+          player.seekTo(player.getDuration() * porcentagem, true);
+        });
+      });
     }
     function atualizarProgresso() {
-        if (!itemTocandoAtualmente || typeof player.getPlayerState !== 'function' || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
-        const duracao = player.getDuration();
-        const tempoAtual = player.getCurrentTime();
-        if (duracao > 0) {
-            const progresso = (tempoAtual / duracao) * 100;
-            itemTocandoAtualmente.querySelector('.audio-progresso-barra').style.width = `${progresso}%`;
-            itemTocandoAtualmente.querySelector('.meta-duracao').innerHTML = `<img src="assets/icones/tempo.png" alt="Duração"> ${formatarTempo(duracao)}`;
-            itemTocandoAtualmente.querySelector('.tempo-atual').textContent = formatarTempo(tempoAtual);
-            itemTocandoAtualmente.querySelector('.tempo-total').textContent = formatarTempo(duracao);
-        }
+      if (!itemTocandoAtualmente || typeof player.getPlayerState !== 'function' || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
+      const duracao = player.getDuration();
+      const tempoAtual = player.getCurrentTime();
+      if (duracao > 0) {
+        const progresso = (tempoAtual / duracao) * 100;
+        itemTocandoAtualmente.querySelector('.audio-progresso-barra').style.width = `${progresso}%`;
+        itemTocandoAtualmente.querySelector('.meta-duracao').innerHTML = `<img src="assets/icones/tempo.png" alt="Duração"> ${formatarTempo(duracao)}`;
+        itemTocandoAtualmente.querySelector('.tempo-atual').textContent = formatarTempo(tempoAtual);
+        itemTocandoAtualmente.querySelector('.tempo-total').textContent = formatarTempo(duracao);
+      }
     }
     function resetarItem(item) {
-        if (!item) return;
-        item.classList.remove('tocando');
-        item.querySelector('.item-icone img').src = 'assets/icones/play-audio.png';
+      if (!item) return;
+      item.classList.remove('tocando');
+      item.querySelector('.item-icone img').src = 'assets/icones/play-audio.png';
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const modal = document.getElementById('modal-adicionar-audio');
       const btnAbrir = document.getElementById('btn-abrir-modal');
       const btnFechar = document.getElementById('btn-fechar-modal');
       const form = document.getElementById('form-audio');
-      
+
       const linkInput = document.getElementById('audio-link');
       const previewContainer = document.getElementById('audio-preview-container');
       const placeholder = '<p class="preview-placeholder">A pré-visualização do vídeo/áudio aparecerá aqui.</p>';
@@ -198,20 +200,28 @@
         const audiosIniciais = [
           { titulo: 'Dicas de segurança online', descricao: 'Como se proteger de golpes e fraudes na internet', id: '2OwABbFf_d8', tag: 'Segurança' },
           { titulo: 'Evitando golpes digitais', descricao: 'Principais golpes digitais e como evitá-los', id: 'c8NxH0HxUHM', tag: 'Segurança' },
-          { titulo: 'O que é Privacidade de Dados?', descricao: 'Entenda a importância de proteger suas informações', id: 'j8-gHPfoHgs', tag: 'Privacidade'}
+          { titulo: 'O que é Privacidade de Dados?', descricao: 'Entenda a importância de proteger suas informações', id: 'j8-gHPfoHgs', tag: 'Privacidade' }
         ];
         sessionStorage.setItem('meusAudios', JSON.stringify(audiosIniciais));
       }
 
+      //  SOMENTE ADMINISTRADOR VÊ O BOTÃO E O MODAL
+      const isAdmin = localStorage.getItem("isAdmin") === "true";
+      if (!isAdmin) {
+        const botaoAdicionar = document.querySelector(".btn-adicionar");
+        if (botaoAdicionar) botaoAdicionar.style.display = "none";
+        if (modal) modal.remove();
+      }
+      
       btnAbrir.addEventListener('click', () => { modal.style.display = 'flex'; });
       btnFechar.addEventListener('click', () => {
-          modal.style.display = 'none';
-          previewContainer.innerHTML = placeholder; // Limpa o preview
-          form.reset();
+        modal.style.display = 'none';
+        previewContainer.innerHTML = placeholder; // Limpa o preview
+        form.reset();
       });
 
       // LÓGICA DA PRÉ-VISUALIZAÇÃO EM TEMPO REAL
-      linkInput.addEventListener('input', function() {
+      linkInput.addEventListener('input', function () {
         const url = linkInput.value;
         const videoId = extrairVideoID(url);
         if (videoId) {
@@ -221,14 +231,14 @@
         }
       });
 
-      form.addEventListener('submit', function(event) {
+      form.addEventListener('submit', function (event) {
         event.preventDefault();
         const titulo = document.getElementById('audio-titulo').value;
         const descricao = document.getElementById('audio-desc').value;
         const link = document.getElementById('audio-link').value;
         const tag = document.getElementById('audio-tag').value;
         const videoID = extrairVideoID(link);
-        
+
         if (!videoID) {
           alert('Por favor, insira um link válido do YouTube.');
           return;
@@ -246,4 +256,5 @@
     });
   </script>
 </body>
+
 </html>
