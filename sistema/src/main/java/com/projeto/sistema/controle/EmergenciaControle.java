@@ -39,6 +39,7 @@ public class EmergenciaControle {
 
         Emergencia novaEmergencia = new Emergencia();
         novaEmergencia.setIdoso(usuario);
+    novaEmergencia.setContatoUsuario(usuario.getContato());
         
         String descricao = (request != null && request.descricao != null) 
                            ? request.descricao 
@@ -48,13 +49,13 @@ public class EmergenciaControle {
         novaEmergencia.setDataHora(LocalDateTime.now());
         novaEmergencia.setStatus(StatusEmergencia.PENDENTE);
 
-        // Salva a emergência no banco de dados
+        
         Emergencia emergenciaSalva = emergenciaRepositorio.save(novaEmergencia);
 
         System.out.println("!!! EMERGÊNCIA DISPARADA !!! Notificar contatos do usuário: " + usuario.getNome());
 
 
-        // Retorna a emergência criada com o status HTTP 201
+        
         return new ResponseEntity<>(emergenciaSalva, HttpStatus.CREATED);
     }
 }

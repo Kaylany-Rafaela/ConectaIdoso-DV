@@ -13,12 +13,13 @@ async function cadastrarUsuario() {
   const telefone = document.getElementById("telefone").value;
   const senha = document.getElementById("senha").value;
   const email = document.getElementById("email").value;
+  const contato = document.getElementById("contato").value;
 
   if (nome && telefone && senha && email) {
         const resposta = await fetch("/usuarios/cadastrar", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nome, telefone, senha, email })
+            body: JSON.stringify({ nome, telefone, senha, email, contato })
         });
 
         if (resposta.ok) {
@@ -81,27 +82,30 @@ async function loginUsuario() {
   }
 }
 
-document.getElementById("formRedefinirSenha").addEventListener("submit", async function(e) {
-    e.preventDefault();
-    const nome = document.getElementById("nome").value;
-    const email = document.getElementById("email").value;
-    const telefone = document.getElementById("telefone").value;
-    const senha = document.getElementById("senha").value;
+const formRedefinir = document.getElementById("formRedefinirSenha");
+if (formRedefinir) {
+  formRedefinir.addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const nome = document.getElementById("nome").value;
+  const email = document.getElementById("email").value;
+  const telefone = document.getElementById("telefone").value;
+  const senha = document.getElementById("senha").value;
 
-    const resposta = await fetch("/usuarios/redefinir-senha", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nome, email, telefone, senha })
-    });
+  const resposta = await fetch("/usuarios/redefinir-senha", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nome, email, telefone, senha })
+  });
 
-    if (resposta.ok) {
-        alert("Senha redefinida com sucesso!");
-        window.location.href = "login.html";
-    } else {
-        const erro = await resposta.text();
-        alert("Erro: " + erro);
-    }
-});
+  if (resposta.ok) {
+    alert("Senha redefinida com sucesso!");
+    window.location.href = "login.html";
+  } else {
+    const erro = await resposta.text();
+    alert("Erro: " + erro);
+  }
+  });
+}
 
 /* Criada a função de sair do webApp */
 function sair() {
@@ -202,3 +206,93 @@ function gerarCalendario() {
 
 // Inicializa ao carregar a página
 document.addEventListener("DOMContentLoaded", gerarCalendario);
+
+/* EMERGÊNCIA (Estrutura Botao + Ligar Emergencia) */
+
+(function() {
+  function abrirModalContatoUnico() {
+    const modal = document.getElementById('modalContatoUnico');
+    if (modal) modal.style.display = 'flex';
+  }
+
+  function fecharModalContatoUnico() {
+    const modal = document.getElementById('modalContatoUnico');
+    if (modal) modal.style.display = 'none';
+  }
+
+  function ligarNumero(telefone) {
+    if (!telefone) return;
+    const tel = telefone.toString().replace(/\D/g, '');
+    if (!tel) return;
+    window.location.href = `tel:${tel}`;
+  }
+
+  async function dispararEmergenciaFlow() {
+    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+    if (!usuarioLogado || !usuarioLogado.id) {
+      alert('Você precisa estar logado!');
+      return;
+    }
+
+    try {
+      await fetch(`/emergencias/disparar/${usuarioLogado.id}`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({descricao: 'Emergência acionada pelo botão SOS'})
+      });
+    } catch (err) {
+      console.warn('Falha ao registrar emergência:', err);
+    }
+
+    const contatoRaw = usuarioLogado.contato || '';
+    const contato = contatoRaw.toString().trim();
+
+    const resumo = document.getElementById('contatoResumo');
+    const btnLigar = document.getElementById('btnLigarContato');
+
+    if (!resumo || !btnLigar) {
+      alert('Contato: ' + contato || 'Nenhum contato cadastrado.');
+      return;
+    }
+
+    if (!contato) {
+      resumo.textContent = 'Nenhum contato cadastrado no seu perfil.';
+      btnLigar.disabled = true;
+      btnLigar.style.opacity = '0.6';
+      btnLigar.onclick = null;
+    } else {
+      resumo.textContent = contato;
+      btnLigar.disabled = false;
+      btnLigar.style.opacity = '1';
+      btnLigar.onclick = function() { ligarNumero(contato); };
+    }
+
+    abrirModalContatoUnico();
+  }
+
+  function initEmergencia() {
+    const btn = document.getElementById('btnEmergencia');
+    if (btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        dispararEmergenciaFlow();
+      });
+    }
+
+    const modal = document.getElementById('modalContatoUnico');
+    if (modal) {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) fecharModalContatoUnico();
+      });
+    }
+
+    window.fecharModalContatoUnico = fecharModalContatoUnico;
+    window.ligarNumero = ligarNumero;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initEmergencia);
+  } else {
+    initEmergencia();
+  }
+})();

@@ -20,15 +20,17 @@ public class Usuario {
     private String telefone;
     private String senha;
     private String email;
+    private String contato;
 
     // Construtores
     public Usuario() {}
 
-    public Usuario(String nome, String telefone, String senha, String email) {
+    public Usuario(String nome, String telefone, String contato, String senha, String email) {
         this.nome = nome;
         this.telefone = telefone;
         this.senha = senha;
         this.email = email;
+        this.contato = contato;
     }
 
     // Getters e Setters
@@ -70,5 +72,12 @@ public class Usuario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public String getContato() {
+        return contato;
+    }
+
+    public void setContato(String contato) {
+        this.contato = contato;
     }
 }
