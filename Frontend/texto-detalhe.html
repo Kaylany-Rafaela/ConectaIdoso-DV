@@ -10,7 +10,7 @@
     <div class="cabecalho">
       <button class="btn-voltar" onclick="window.location.href='textos.html'">Voltar</button>
       <img src="assets/logos/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
-      <button class="btn-sair" onclick="window.location.href='login.html'">Sair</button>
+      <button class="btn-sair" onclick="sair()">Sair</button>
     </div>
 
     <main class="artigo-container" id="artigo-container">
@@ -39,7 +39,7 @@
           document.title = texto.titulo;
           tituloEl.textContent = texto.titulo;
           
-          // A LINHA QUE EXIBIA A TAG FOI REMOVIDA DAQUI
+          // A LINHA QUE EXIBIA A TAG FOI REMOIDA DAQUI
           
           // Como o Trix já salva em HTML, apenas inserimos diretamente
           conteudoEl.innerHTML = texto.conteudo;
@@ -49,5 +49,7 @@
       }
     });
   </script>
+  
+  <script src="app.js"></script>
 </body>
 </html>

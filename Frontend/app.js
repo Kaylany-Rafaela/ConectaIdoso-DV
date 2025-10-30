@@ -3,31 +3,8 @@
 /* ========================= */
 
 /* Criada a função para entrar e navegar na aba de cadastro */
-function Cadastrar() {
+function cadastrar() {
     window.location.href = "cadastrar.html";
-}
-
-/* Criada a função para salvar os dados de novos usuários */
-function realizarCadastro() {
-  const usuario = document.getElementById("usuario").value;
-  const senha = document.getElementById("senha").value;
-  const isAdmin = document.getElementById("isAdmin").checked;
-
-  if (usuario && senha) {
-    localStorage.setItem("usuarioCadastrado", usuario);
-    localStorage.setItem("senhaCadastrada", senha);
-    localStorage.setItem("isAdmin", isAdmin);
-
-    alert("Cadastro realizado com sucesso!");
-
-    if (isAdmin) {
-      window.location.href = "painel-adm.html";
-    } else {
-      window.location.href = "painel.html";
-    }
-  } else {
-    alert("Por favor, preencha todos os campos.");
-  }
 }
 
 /* Criada a função de login e senha, onde tem verificação de dados */
@@ -53,6 +30,23 @@ function entrar() {
   }
 }
 
+/* ======================== */
+/* NAVEGAÇÃO DINÂMICA       */
+/* ======================== */
+
+/**
+ * Função inteligente para voltar ao painel correto
+ * baseado em quem está logado.
+ */
+function voltarParaPainel() {
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
+  
+  if (isAdmin) {
+    window.location.href = "painel-adm.html";
+  } else {
+    window.location.href = "painel.html";
+  }
+}
 
 /* Criada a função de sair do webApp */
 function sair() {
@@ -111,6 +105,9 @@ document.addEventListener("DOMContentLoaded", () => {
 // Função para gerar o calendário atual
 function gerarCalendario() {
   const diasEl = document.getElementById("dias");
+  // Proteção para não quebrar em páginas que não têm calendário
+  if (!diasEl) return; 
+  
   diasEl.innerHTML = "";
 
   const hoje = new Date();
