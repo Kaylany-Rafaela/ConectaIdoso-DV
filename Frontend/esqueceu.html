@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Conecta Idoso - Recuperar Senha</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="pagina-login">
+  <div class="caixa">
+    
+    <div class="cabecalho">
+      <button class="btn-voltar" onclick="window.location.href='login.html'">Voltar</button>
+      <img src="assets/logos/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
+    </div>
+
+    <h1>Recuperar Senha</h1>
+    <p style="margin-bottom: 20px; font-size: 18px; color: #555;">
+        Para recuperar sua senha, digite uma das informações cadastradas abaixo.
+    </p>
+
+    <div class="campos-recuperacao">
+        <input type="text" id="identificador" placeholder="Telefone, Email ou Nome" style="width: 80%;">
+        
+        <button class="btn-principal" onclick="exibirSenha()">Buscar Senha</button>
+    </div>
+
+    <div id="resultadoBusca" style="margin-top: 30px; padding: 20px; border: 1px dashed #ccc; width: 80%; border-radius: 8px; display: none;">
+        <p style="font-size: 18px; color: #333;">Sua senha é: 
+            <strong id="senhaEncontrada" style="color: #e74c3c; font-size: 22px;"></strong>
+        </p>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Lógica SIMPLES de exibição da senha
+    function exibirSenha() {
+      const identificadorInput = document.getElementById('identificador').value.trim();
+      const resultadoEl = document.getElementById('resultadoBusca');
+      const senhaEl = document.getElementById('senhaEncontrada');
+
+      if (!identificadorInput) {
+        alert('Por favor, preencha o campo.');
+        return;
+      }
+      
+      // 1. Pega TODOS os possíveis identificadores salvos
+      const usuarioCadastrado = localStorage.getItem("usuarioCadastrado"); 
+      const nomeUsuario = localStorage.getItem("nomeUsuario");
+      const nomeAdm = localStorage.getItem("nomeAdm");
+      const emailAdm = localStorage.getItem("emailAdm");
+      const nomeIdoso = localStorage.getItem("nomeIdoso");
+      
+      const senhaSalva = localStorage.getItem("senhaCadastrada");
+
+      // 2. Verifica se o input corresponde a algum identificador
+      if (
+        identificadorInput === usuarioCadastrado || 
+        identificadorInput === nomeUsuario ||
+        identificadorInput === nomeAdm ||
+        identificadorInput === emailAdm ||
+        identificadorInput === nomeIdoso
+      ) {
+        if (senhaSalva) {
+          // Exibe a senha encontrada
+          senhaEl.textContent = senhaSalva;
+          resultadoEl.style.display = 'block';
+        } else {
+          // Senha não salva (o que é improvável se o cadastro foi feito)
+          senhaEl.textContent = 'ERRO: Conta encontrada, mas a senha não está salva.';
+          resultadoEl.style.display = 'block';
+        }
+      } else {
+        // Nada encontrado
+        alert('Identificador não encontrado. Tente Telefone, Email ou Nome de usuário cadastrado.');
+        resultadoEl.style.display = 'none';
+      }
+    }
+    
+    // Configura o botão Voltar (Função do app.js)
+    document.querySelector('.btn-voltar').onclick = function() {
+        window.location.href = 'login.html';
+    };
+  </script>
+</body>
+</html>

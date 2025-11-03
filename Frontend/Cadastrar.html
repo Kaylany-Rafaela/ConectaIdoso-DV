@@ -8,7 +8,6 @@
 <body class="pagina-cadastrar">
   <div class="caixa">
     
-    <!-- Cabeçalho padrão (igual agenda) -->
     <div class="cabecalho">
       <button class="btn-voltar" onclick="window.location.href='login.html'">Voltar</button>
       <img src="assets/logos/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
@@ -16,14 +15,12 @@
 
     <h1>Cadastrar</h1>
 
-    <!-- Campos padrão (usuário comum) -->
     <div id="camposUsuario">
       <input type="text" id="nome" placeholder="Digite o seu nome">
       <input type="text" id="usuario" placeholder="Digite seu telefone">
       <input type="password" id="senha" placeholder="Crie uma senha">
     </div>
 
-    <!-- Toggle de administrador -->
     <div class="toggle-container">
       <label class="switch">
         <input type="checkbox" id="isAdmin" onchange="mostrarCamposAdmin()">
@@ -32,20 +29,20 @@
       <span>Administrador</span>
     </div>
 
-    <!-- Campos do administrador -->
     <div id="camposAdmin" style="display: none;">
       <div class="coluna">
         <h3>Informações do Idoso</h3>
-        <input type="text" id="nomeIdoso" placeholder="Nome do idoso">
-        <input type="text" id="telefoneIdoso" placeholder="Telefone do idoso">
-        <input type="text" id="enderecoIdoso" placeholder="Endereço do idoso">
+        <input type="text" id="nomeIdoso" placeholder="Nome do idoso" required>
+        <input type="text" id="telefoneIdoso" placeholder="Telefone do idoso" required>
+        <input type="text" id="enderecoIdoso" placeholder="Endereço do idoso" required>
       </div>
 
       <div class="coluna">
         <h3>Informações do Administrador</h3>
-        <input type="text" id="nomeAdm" placeholder="Seu nome (administrador)">
-        <input type="text" id="enderecoAdm" placeholder="Seu endereço">
-      </div>
+        <input type="text" id="nomeAdm" placeholder="Seu nome (administrador)" required>
+        <input type="email" id="emailAdm" placeholder="Seu email" required>
+        <input type="password" id="senhaAdm" placeholder="Crie uma senha" required>
+        </div>
     </div>
 
     <button class="btn-cadastrar" onclick="realizarCadastro()">Cadastrar</button>
@@ -56,10 +53,14 @@
       const check = document.getElementById("isAdmin").checked;
       const camposUsuario = document.getElementById("camposUsuario");
       const camposAdmin = document.getElementById("camposAdmin");
+      // O campo de telefone do idoso é usado como 'usuário' de login.
+      const telefoneIdosoInput = document.getElementById("telefoneIdoso");
+
 
       if (check) {
         camposUsuario.style.display = "none";
         camposAdmin.style.display = "flex";
+        
       } else {
         camposUsuario.style.display = "block";
         camposAdmin.style.display = "none";
@@ -70,27 +71,41 @@
       const isAdmin = document.getElementById("isAdmin").checked;
 
       if (isAdmin) {
+        // Coleta dados do Idoso
         const nomeIdoso = document.getElementById("nomeIdoso").value;
         const telefoneIdoso = document.getElementById("telefoneIdoso").value;
         const enderecoIdoso = document.getElementById("enderecoIdoso").value;
-        const nomeAdm = document.getElementById("nomeAdm").value;
-        const enderecoAdm = document.getElementById("enderecoAdm").value;
 
-        if (!nomeIdoso || !telefoneIdoso || !enderecoIdoso || !nomeAdm || !enderecoAdm) {
+        // Coleta dados do Admin (Corrigido)
+        const nomeAdm = document.getElementById("nomeAdm").value;
+        const emailAdm = document.getElementById("emailAdm").value; // NOVO CAMPO
+        const senhaAdm = document.getElementById("senhaAdm").value; // NOVO CAMPO
+        // const enderecoAdm foi removido
+
+        // Verifica campos obrigatórios do Admin (Corrigido)
+        if (!nomeIdoso || !telefoneIdoso || !enderecoIdoso || !nomeAdm || !emailAdm || !senhaAdm) {
           alert("Por favor, preencha todos os campos do administrador e do idoso.");
           return;
         }
 
+        // SALVA no localStorage (Corrigido)
         localStorage.setItem("isAdmin", true);
+        
+        // Dados do Idoso (usado para login)
+        localStorage.setItem("usuarioCadastrado", telefoneIdoso); // O login do Admin usa o telefone do Idoso
+        localStorage.setItem("senhaCadastrada", senhaAdm); // A senha do Admin é a que ele cria
         localStorage.setItem("nomeIdoso", nomeIdoso);
         localStorage.setItem("telefoneIdoso", telefoneIdoso);
         localStorage.setItem("enderecoIdoso", enderecoIdoso);
+        
+        // Dados do Admin
         localStorage.setItem("nomeAdm", nomeAdm);
-        localStorage.setItem("enderecoAdm", enderecoAdm);
-
+        localStorage.setItem("emailAdm", emailAdm); // NOVO CAMPO SALVO
+        
         alert("Cadastro de administrador realizado com sucesso!");
         window.location.href = "painel-adm.html";
       } else {
+        // Lógica para o usuário comum
         const nome = document.getElementById("nome").value;
         const usuario = document.getElementById("usuario").value;
         const senha = document.getElementById("senha").value;
@@ -103,6 +118,9 @@
         localStorage.setItem("usuarioCadastrado", usuario);
         localStorage.setItem("senhaCadastrada", senha);
         localStorage.setItem("isAdmin", false);
+        
+        // Salvando o nome do usuário para login flexível
+        localStorage.setItem("nomeUsuario", nome); 
 
         alert("Cadastro realizado com sucesso!");
         window.location.href = "painel.html";

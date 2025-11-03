@@ -9,16 +9,41 @@ function cadastrar() {
 
 /* Criada a função de login e senha, onde tem verificação de dados */
 function entrar() {
-  const usuarioInput = document.getElementById("usuario").value;
+  const usuarioInput = document.getElementById("usuario").value.trim(); // Pega o que foi digitado (Telefone/Email/Nome)
   const senhaInput = document.getElementById("senha").value;
 
-  const usuarioCadastrado = localStorage.getItem("usuarioCadastrado");
-  const senhaCadastrada = localStorage.getItem("senhaCadastrada");
+  // Credenciais salvas no localStorage
+  const usuarioCadastrado = localStorage.getItem("usuarioCadastrado"); // Telefone do Usuário ou Telefone do Idoso
+  const senhaCadastrada = localStorage.getItem("senhaCadastrada"); // Senha do Usuário ou Senha do Admin
   const isAdmin = localStorage.getItem("isAdmin") === "true";
+  
+  // Novos campos para flexibilizar o login (Idoso e Admin)
+  const nomeUsuario = localStorage.getItem("nomeUsuario"); // NOVO: Nome do Idoso não-admin
+  const nomeAdm = localStorage.getItem("nomeAdm");
+  const emailAdm = localStorage.getItem("emailAdm"); 
+  const nomeIdoso = localStorage.getItem("nomeIdoso"); // Nome do Idoso (ligado ao Admin)
+  
+  // 1. Definição da Identidade: Verifica se o input corresponde a alguma das credenciais salvas
+  let credencialCorreta = false;
+  
+  if (!isAdmin) {
+      // 🚨 NOVO: Lógica para USUÁRIO COMUM (Idoso não-admin)
+      // O Idoso pode logar com o Telefone OU o Nome
+      if (usuarioInput === usuarioCadastrado || usuarioInput === nomeUsuario) {
+          credencialCorreta = true;
+      }
+  } else if (isAdmin) {
+      // Lógica para ADMINISTRADOR (pode logar com 4 opções)
+      // Verifica Telefone do Idoso (usuarioCadastrado), Nome do Admin, Email do Admin ou Nome do Idoso
+      if (usuarioInput === usuarioCadastrado || usuarioInput === nomeAdm || usuarioInput === emailAdm || usuarioInput === nomeIdoso) {
+          credencialCorreta = true;
+      }
+  }
 
+  // 2. Verificação Final: Se a credencial foi identificada E a senha corresponde
   if (
-    (usuarioInput === usuarioCadastrado && senhaInput === senhaCadastrada) ||
-    (usuarioInput === "teste" && senhaInput === "1234")
+    (credencialCorreta && senhaInput === senhaCadastrada) ||
+    (usuarioInput === "teste" && senhaInput === "1234") // Login de teste
   ) {
     if (isAdmin) {
       window.location.href = "painel-adm.html";
