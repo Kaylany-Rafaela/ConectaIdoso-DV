@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Conecta Idoso - Vídeos</title>
-  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/estilo.css">
 </head>
 <body class="pagina-conteudo">
   <div class="caixa">
@@ -168,8 +168,10 @@
       alert("Você precisa estar logado para acessar esta página.");
       window.location.href = "login.html";
     }
-    const h2 = document.getElementById("bem-vindo");
-    h2.textContent = `Bem-vindo(a), ${usuarioLogado.nome}!`;
+   const h2 = document.getElementById("bem-vindo");
+    if (h2) {
+      h2.textContent = `Bem-vindo(a), ${usuarioLogado.nome}!`;
+    }
   </script>
 </body>
 </html>

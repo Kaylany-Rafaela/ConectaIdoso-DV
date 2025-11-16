@@ -3,8 +3,11 @@ package com.projeto.sistema.controle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
+import java.util.Map;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.projeto.sistema.modelo.Usuario;
@@ -69,5 +72,87 @@ public class ControleUsuario {
             // Dados não conferem
             return ResponseEntity.status(404).body("Usuário não encontrado. Verifique os dados informados.");
         }
+    }
+
+    @PostMapping(value = "/associar-admin", consumes = "application/json")
+    public ResponseEntity<?> associarAdmin(@RequestBody Map<String, String> body) {
+        // Dados esperados no body: telefoneIdoso OR emailIdoso, nomeAdm, telefoneAdm, emailAdm, senhaAdm
+        String telefoneIdoso = body.get("telefoneIdoso");
+        String emailIdoso = body.get("emailIdoso");
+
+        Usuario usuarioExistente = null;
+        if (telefoneIdoso != null && !telefoneIdoso.isEmpty()) {
+            usuarioExistente = RepositorioUsuarios.findByTelefone(telefoneIdoso);
+        }
+        if (usuarioExistente == null && emailIdoso != null && !emailIdoso.isEmpty()) {
+            usuarioExistente = RepositorioUsuarios.findByEmail(emailIdoso);
+        }
+
+        if (usuarioExistente == null) {
+            return ResponseEntity.status(404).body("Usuário associado (idoso) não encontrado");
+        }
+
+        // atualiza o contato de emergência do usuário existente com o telefone do admin
+        String telefoneAdm = body.get("telefoneAdm");
+        if (telefoneAdm == null || telefoneAdm.isEmpty()) {
+            return ResponseEntity.status(400).body("Telefone do administrador é obrigatório para associação");
+        }
+
+        usuarioExistente.setContato(telefoneAdm);
+        // se houver endereco do idoso no body, atualiza
+        String enderecoIdoso = body.get("enderecoIdoso");
+        if (enderecoIdoso != null && !enderecoIdoso.isEmpty()) {
+            usuarioExistente.setEndereco(enderecoIdoso);
+        }
+        RepositorioUsuarios.save(usuarioExistente);
+
+        // cria o usuário administrador
+        String nomeAdm = body.get("nomeAdm");
+        String emailAdm = body.get("emailAdm");
+        String senhaAdm = body.get("senhaAdm");
+
+        if (nomeAdm == null || emailAdm == null || senhaAdm == null) {
+            return ResponseEntity.status(400).body("Dados incompletos do administrador");
+        }
+
+        // Verifica duplicidade por telefone ou email
+        Usuario dupTelefone = RepositorioUsuarios.findByTelefone(telefoneAdm);
+        if (dupTelefone != null) {
+            return ResponseEntity.status(401).body("Já existe um usuário com esse telefone do administrador");
+        }
+        Usuario dupEmail = RepositorioUsuarios.findByEmail(emailAdm);
+        if (dupEmail != null) {
+            return ResponseEntity.status(401).body("Já existe um usuário com esse email do administrador");
+        }
+
+    Usuario admin = new Usuario(nomeAdm, telefoneAdm, telefoneIdoso, senhaAdm, emailAdm);
+    // se houver endereco para o admin no body, defina-o
+    String enderecoAdm = body.get("enderecoAdm");
+    if (enderecoAdm != null && !enderecoAdm.isEmpty()) {
+        admin.setEndereco(enderecoAdm);
+    }
+    admin.setIsAdmin(true);
+    Usuario adminSalvo = RepositorioUsuarios.save(admin);
+
+        return ResponseEntity.ok(adminSalvo);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> getUsuarioPorId(@PathVariable Long id) {
+        java.util.Optional<com.projeto.sistema.modelo.Usuario> opt = RepositorioUsuarios.findById(id);
+        if (opt.isPresent()) {
+            return ResponseEntity.ok(opt.get());
+        } else {
+            return ResponseEntity.status(404).body("Usuário não encontrado");
+        }
+    }
+
+    @GetMapping(value = "/por-telefone/{telefone}")
+    public ResponseEntity<?> getUsuarioPorTelefone(@PathVariable String telefone) {
+        Usuario u = RepositorioUsuarios.findByTelefone(telefone);
+        if (u == null) {
+            return ResponseEntity.status(404).body("Usuário não encontrado");
+        }
+        return ResponseEntity.ok(u);
     }
 }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Conecta Idoso - Assistindo Vídeo</title>
-  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/estilo.css">
 </head>
 <body class="pagina-conteudo pagina-player">
   <div class="caixa">
@@ -23,42 +23,74 @@
   </div>
 
   <script>
-    window.onload = function() {
+    window.addEventListener('load', function() {
       const urlParams = new URLSearchParams(window.location.search);
-      
+
       const videoId = urlParams.get('video');
       const videoTitle = urlParams.get('titulo'); // Pega o TÍTULO da URL
-      
+
       const iframe = document.querySelector('.video-responsivo iframe');
       const h2Titulo = document.querySelector('.titulo-video');
-      
-      if (videoId) {
-        // Carrega o vídeo correto no player
-        iframe.src = `https://www.youtube.com/embed/${videoId}`;
-        
-        // Se um título foi passado na URL, atualiza o h2
-        if (videoTitle) {
-          h2Titulo.textContent = videoTitle;
-        }
-      } else {
-        // Se nenhum ID foi passado, mostra uma mensagem de erro
-        h2Titulo.textContent = "Erro: Vídeo não encontrado.";
-        console.error("Nenhum ID de vídeo foi fornecido na URL.");
+
+      console.log('[video-player] params:', Object.fromEntries(urlParams.entries()));
+
+      if (!videoId) {
+        if (h2Titulo) h2Titulo.textContent = 'Erro: Vídeo não encontrado.';
+        console.error('[video-player] Nenhum ID de vídeo foi fornecido na URL.');
+        return;
       }
-    };
+
+      if (!iframe) {
+        if (h2Titulo) h2Titulo.textContent = 'Erro: player indisponível.';
+        console.error('[video-player] iframe não encontrado no DOM.');
+        return;
+      }
+
+      // define src usando youtube-nocookie (privacidade) e evita vídeos relacionados
+      const src = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1`;
+      iframe.src = src;
+      console.log('[video-player] set iframe.src ->', src);
+
+      if (h2Titulo) {
+        try { h2Titulo.textContent = videoTitle ? decodeURIComponent(videoTitle) : ''; } catch (e) { h2Titulo.textContent = videoTitle || ''; }
+      }
+
+      // tenta detectar onload; se não ocorrer em 8s, mostra link de fallback
+      let carregou = false;
+      iframe.onload = function() { carregou = true; console.log('[video-player] iframe onload'); };
+      setTimeout(function() {
+        if (!carregou) {
+          console.warn('[video-player] iframe possivelmente bloqueado ou não carregou');
+          if (h2Titulo) h2Titulo.textContent = 'Não foi possível carregar o vídeo aqui. Abra no YouTube:';
+          const container = document.querySelector('.video-responsivo');
+          if (iframe && iframe.parentNode) iframe.parentNode.removeChild(iframe);
+          if (container) {
+            const link = document.createElement('a');
+            link.href = `https://youtu.be/${videoId}`;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = 'Abrir no YouTube';
+            link.style.display = 'inline-block';
+            link.style.marginTop = '12px';
+            container.appendChild(link);
+          }
+        }
+      }, 8000);
+    });
   </script>
   <script src="/js/app.js"></script>
   <script>
-    // Checa se existe usuário logado no localStorage
+    // Checa se existe usuário logado no localStorage (defensivo)
     var usuarioJSON = localStorage.getItem("usuarioLogado");
-    var usuarioLogado = JSON.parse(usuarioJSON)
+    var usuarioLogado = usuarioJSON ? JSON.parse(usuarioJSON) : null;
 
     if (!usuarioLogado) {
       alert("Você precisa estar logado para acessar esta página.");
       window.location.href = "login.html";
+    } else {
+      const h2 = document.getElementById("bem-vindo");
+      if (h2) h2.textContent = `Bem-vindo(a), ${usuarioLogado.nome}!`;
     }
-    const h2 = document.getElementById("bem-vindo");
-    h2.textContent = `Bem-vindo(a), ${usuarioLogado.nome}!`;
   </script>
 </body>
 </html>

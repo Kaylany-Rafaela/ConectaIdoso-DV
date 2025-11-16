@@ -2,50 +2,170 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Meu Perfil</title>
-  <link rel="stylesheet" href="/css/main.css">
+  <title>Conecta Idoso - Perfil</title>
+  <link rel="stylesheet" href="css/estilo.css">
 </head>
-<body>
-  <header>
-    <button class="voltar" onclick="history.back()">←</button>
-    <h1>Meu Perfil</h1>
-  </header>
+<body class="pagina-perfil">
+  <div class="caixa">
+    <!-- Cabeçalho -->
+    <div class="cabecalho">
+      <button class="btn-voltar" onclick="window.location.href='painel-adm.html'">Voltar</button>
+  <img src="/images/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
+      <button class="btn-sair" onclick="sair()">Sair</button>
+    </div>
 
-  <main>
-    <section class="perfil-card">
-      <div class="avatar">👤</div>
-      <h2>José da Silva</h2>
-      <button class="btn-primario">✎ Editar Perfil</button>
-    </section>
+    <h2>Perfil Cadastrado</h2>
+    
+    <!-- Conteúdo -->
+    <div class="conteudo-perfil">
+      <!-- debug removido -->
+      <!-- Bloco Idoso -->
+      <div class="bloco-perfil bloco-idoso">
+        <h3>👴 Informações do Idoso</h3>
+        <label>Nome:</label>
+        <input type="text" id="nomeIdosoPerfil" disabled>
 
-    <section class="info">
-      <h3>Informações Pessoais</h3>
-      <p><strong>Nome:</strong> José da Silva</p>
-      <p><strong>Telefone:</strong> (11) 99999-1234</p>
-      <p><strong>Endereço:</strong> Rua das Flores, 123 - São Paulo, SP</p>
-    </section>
+        <label>Telefone:</label>
+        <input type="text" id="telefoneIdosoPerfil" disabled>
 
-    <section class="info">
-      <h3>Contato de Emergência</h3>
-      <p><strong>Pessoa:</strong> Maria Silva - (11) 99999-1234</p>
-    </section>
+        <label>Endereço:</label>
+        <input type="text" id="enderecoIdosoPerfil" disabled>
+      </div>
 
-    <section class="info">
-      <h3>Segurança</h3>
-      <button class="btn-primario">🔒 Alterar Senha</button>
-    </section>
-  </main>
-  <script>
-    // Checa se existe usuário logado no localStorage
-    var usuarioJSON = localStorage.getItem("usuarioLogado");
-    var usuarioLogado = JSON.parse(usuarioJSON)
+      <!-- Bloco Administrador -->
+      <div class="bloco-perfil bloco-admin">
+        <h3>👤 Informações do Administrador</h3>
+        <label>Nome:</label>
+        <input type="text" id="nomeAdmPerfil" disabled>
 
-    if (!usuarioLogado) {
-      alert("Você precisa estar logado para acessar esta página.");
-      window.location.href = "login.html";
+        <label>Telefone:</label>
+        <input type="text" id="telefoneAdmPerfil" disabled>
+
+        <label>Endereço:</label>
+        <input type="text" id="enderecoAdmPerfil" disabled>
+      </div>
+      
+      <!-- Botões -->
+      <div class="acoes-perfil">
+        <button class="btn-editar" id="btnEditar" onclick="editarInformacoes()">Editar Informações</button>
+        <button class="btn-salvar" id="btnSalvar" style="display:none;" onclick="salvarInformacoes()">Salvar Alterações</button>
+      </div>
+    </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+
+    <script>
+    // REMOVIDA A FUNÇÃO voltarPainel() DAQUI (agora está no app.js)
+
+    // Carrega dados salvos (agora usando usuarioLogado quando disponível)
+    window.onload = async () => {
+      // tenta garantir que temos o usuarioLogado atualizado (via backend) antes de preencher o DOM
+      await window.buscarEAtualizarUsuarioLogado();
+
+      const usuarioRaw = localStorage.getItem('usuarioLogado');
+      let usuario = null;
+      try {
+        usuario = usuarioRaw ? JSON.parse(usuarioRaw) : null;
+      } catch (e) {
+        usuario = null;
+      }
+
+      // debug visível removido; mantemos logs no console
+      console.log('perfil - usuarioLogado raw:', usuarioRaw);
+      console.log('perfil - usuario parsed:', usuario);
+
+      if (usuario) {
+        const isAdmin = usuario.isAdmin === true || usuario.isAdmin === 'true' || usuario.isAdmin === 1;
+
+        if (isAdmin) {
+          // preencher bloco admin com dados do usuário logado
+          document.getElementById('nomeAdmPerfil').value = usuario.nome || '';
+          document.getElementById('telefoneAdmPerfil').value = usuario.telefone || '';
+          document.getElementById('enderecoAdmPerfil').value = usuario.endereco || localStorage.getItem('enderecoAdm') || '';
+
+          // idoso associado: podemos preencher telefone com usuario.contato (telefone do idoso)
+          const telefoneIdoso = usuario.contato || localStorage.getItem('telefoneIdoso') || '';
+          document.getElementById('telefoneIdosoPerfil').value = telefoneIdoso;
+
+          // tentar buscar dados do idoso pelo telefone (se disponível) e preencher nome/endereco
+          if (telefoneIdoso) {
+            try {
+              const idoso = await window.fetchUsuarioPorTelefone(telefoneIdoso);
+              if (idoso) {
+                document.getElementById('nomeIdosoPerfil').value = idoso.nome || '';
+                document.getElementById('enderecoIdosoPerfil').value = idoso.endereco || '';
+                // também salvar para compatibilidade futura
+                localStorage.setItem('nomeIdoso', idoso.nome || '');
+                localStorage.setItem('enderecoIdoso', idoso.endereco || '');
+              }
+            } catch(e) {
+              console.debug('Não foi possível buscar idoso por telefone:', telefoneIdoso, e.message || e);
+            }
+          }
+        } else {
+          // usuário comum -> preencher bloco idoso com dados do usuario
+          document.getElementById('nomeIdosoPerfil').value = usuario.nome || '';
+          document.getElementById('telefoneIdosoPerfil').value = usuario.telefone || '';
+          document.getElementById('enderecoIdosoPerfil').value = usuario.endereco || localStorage.getItem('enderecoIdoso') || '';
+
+          // preencher bloco admin com contato de emergência (se existir)
+          const telefoneAdm = usuario.contato || localStorage.getItem('telefoneAdm') || '';
+          document.getElementById('telefoneAdmPerfil').value = telefoneAdm;
+          // se tiver telefone do admin, tentar buscar os dados do admin
+          if (telefoneAdm) {
+            try {
+              const adm = await window.fetchUsuarioPorTelefone(telefoneAdm);
+              if (adm) {
+                document.getElementById('nomeAdmPerfil').value = adm.nome || '';
+                document.getElementById('enderecoAdmPerfil').value = adm.endereco || '';
+                localStorage.setItem('nomeAdm', adm.nome || '');
+                localStorage.setItem('enderecoAdm', adm.endereco || '');
+              }
+            } catch(e) {
+              console.debug('Não foi possível buscar admin por telefone:', telefoneAdm, e.message || e);
+            }
+          } else {
+            document.getElementById('nomeAdmPerfil').value = localStorage.getItem('nomeAdm') || '';
+            document.getElementById('enderecoAdmPerfil').value = localStorage.getItem('enderecoAdm') || '';
+          }
+        }
+      } else {
+        // fallback para compatibilidade anterior (usando chaves individuais no localStorage)
+        document.getElementById('nomeIdosoPerfil').value = localStorage.getItem('nomeIdoso') || '';
+        document.getElementById('telefoneIdosoPerfil').value = localStorage.getItem('telefoneIdoso') || '';
+        document.getElementById('enderecoIdosoPerfil').value = localStorage.getItem('enderecoIdoso') || '';
+
+        document.getElementById('nomeAdmPerfil').value = localStorage.getItem('nomeAdm') || '';
+        document.getElementById('telefoneAdmPerfil').value = localStorage.getItem('telefoneAdm') || '';
+        document.getElementById('enderecoAdmPerfil').value = localStorage.getItem('enderecoAdm') || '';
+      }
+    };
+
+    // Habilitar edição
+    function editarInformacoes() {
+      document.querySelectorAll(".bloco-perfil input").forEach(input => input.disabled = false);
+      document.getElementById("btnEditar").style.display = "none";
+      document.getElementById("btnSalvar").style.display = "inline-block";
     }
-    const h2 = document.getElementById("bem-vindo");
-    h2.textContent = `Bem-vindo(a), ${usuarioLogado.nome}!`;
+
+    // Salvar alterações
+    function salvarInformacoes() {
+      localStorage.setItem("nomeIdoso", document.getElementById("nomeIdosoPerfil").value);
+      localStorage.setItem("telefoneIdoso", document.getElementById("telefoneIdosoPerfil").value);
+      localStorage.setItem("enderecoIdoso", document.getElementById("enderecoIdosoPerfil").value);
+      localStorage.setItem("nomeAdm", document.getElementById("nomeAdmPerfil").value);
+      localStorage.setItem("telefoneAdm", document.getElementById("telefoneAdmPerfil").value);
+      localStorage.setItem("enderecoAdm", document.getElementById("enderecoAdmPerfil").value);
+
+      document.querySelectorAll(".bloco-perfil input").forEach(input => input.disabled = true);
+      document.getElementById("btnEditar").style.display = "inline-block";
+      document.getElementById("btnSalvar").style.display = "none";
+
+      alert("Informações atualizadas com sucesso!");
+    }
   </script>
+  
+  <script src="/js/app.js"></script>
 </body>
 </html>

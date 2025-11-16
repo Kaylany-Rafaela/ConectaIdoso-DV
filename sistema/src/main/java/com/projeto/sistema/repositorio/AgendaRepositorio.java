@@ -6,5 +6,5 @@ import com.projeto.sistema.modelo.Agenda;
 
 public interface AgendaRepositorio extends JpaRepository<Agenda, Long> {
 
-    List<Agenda> findByIdoso_IdOrderByDataInicioAsc(Long idDoUsuario);
+    List<Agenda> findByIdoso_IdOrderByDataHoraAsc(Long idDoUsuario);
 }

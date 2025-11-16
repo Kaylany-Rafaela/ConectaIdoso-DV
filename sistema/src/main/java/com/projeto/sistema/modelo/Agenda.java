@@ -30,10 +30,10 @@ public class Agenda implements Serializable {
     private String descricao;
 
     @Column(name = "data_inicio")
-    private LocalDateTime dataInicio;
+    private LocalDateTime dataHora;
 
-    @Column(name = "data_fim")
-    private LocalDateTime dataFim;
+    @Column(name = "cor")
+    private String cor;
 
     @Column(name = "notificacao_sonora")
     private boolean notificacaoSonora;
@@ -79,20 +79,20 @@ public class Agenda implements Serializable {
         this.descricao = descricao;
     }
 
-    public LocalDateTime getDataInicio() {
-        return dataInicio;
+    public LocalDateTime getDataHora() {
+        return dataHora;
     }
 
-    public void setDataInicio(LocalDateTime dataInicio) {
-        this.dataInicio = dataInicio;
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
     }
 
-    public LocalDateTime getDataFim() {
-        return dataFim;
+    public String getCor() {
+        return cor;
     }
 
-    public void setDataFim(LocalDateTime dataFim) {
-        this.dataFim = dataFim;
+    public void setCor(String cor) {
+        this.cor = cor;
     }
 
     public boolean isNotificacaoSonora() {

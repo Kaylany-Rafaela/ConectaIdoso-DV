@@ -1,7 +1,5 @@
 com\projeto\sistema\repositorio\AgendaRepositorio.class
 com\projeto\sistema\controle\AgendaControle.class
-com\projeto\sistema\controle\ContatoEmergenciaControle.class
-com\projeto\sistema\repositorio\ContatoEmergenciaRepositorio.class
 com\projeto\sistema\repositorio\EmergenciaRepositorio.class
 com\projeto\sistema\repositorio\BibliotecaRepositorio.class
 com\projeto\sistema\modelo\Usuario.class
@@ -9,7 +7,6 @@ com\projeto\sistema\controle\EmergenciaControle$EmergenciaRequest.class
 com\projeto\sistema\controle\ControleUsuario.class
 com\projeto\sistema\modelo\Biblioteca.class
 com\projeto\sistema\modelo\Agenda.class
-com\projeto\sistema\modelo\ContatoEmergencia.class
 com\projeto\sistema\modelo\StatusEmergencia.class
 com\projeto\sistema\controle\BibliotecaControle.class
 com\projeto\sistema\CorsConfig.class

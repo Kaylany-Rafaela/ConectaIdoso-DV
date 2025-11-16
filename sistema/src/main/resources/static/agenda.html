@@ -3,19 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <title>Agenda</title>
-  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/estilo.css">
 </head>
 <body class="pagina-agenda">
   <div class="caixa">
     
     <!-- Cabeçalho -->
     <div class="cabecalho">
-      <button class="btn-voltar" onclick="window.location.href='painel.html'">Voltar</button>
-      <img src="/images/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
+  <button class="btn-voltar" onclick="voltarParaPainel()">Voltar</button>
+  <img src="/images/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
       <button class="btn-sair" onclick="sair()">Sair</button>
     </div>
 
     <h2>Agenda</h2>
+
+    <div style="text-align:right; margin-bottom:8px;">
+      <button id="btn-cadastrar-evento" class="btn-principal" style="padding:8px 14px; display:none;">Cadastrar Evento</button>
+    </div>
 
     <!-- Conteúdo principal -->
     <div class="conteudo-agenda">
@@ -54,16 +58,17 @@
   </div>
   <script src="/js/app.js"></script>
   <script>
-    // Checa se existe usuário logado no localStorage
+    // Checa se existe usuário logado no localStorage (defensivo)
     var usuarioJSON = localStorage.getItem("usuarioLogado");
-    var usuarioLogado = JSON.parse(usuarioJSON)
+    var usuarioLogado = usuarioJSON ? JSON.parse(usuarioJSON) : null;
 
     if (!usuarioLogado) {
       alert("Você precisa estar logado para acessar esta página.");
       window.location.href = "login.html";
+    } else {
+      const h2 = document.getElementById("bem-vindo");
+      if (h2) h2.textContent = `Bem-vindo(a), ${usuarioLogado.nome}!`;
     }
-    const h2 = document.getElementById("bem-vindo");
-    h2.textContent = `Bem-vindo(a), ${usuarioLogado.nome}!`;
   </script>
 </body>
 </html>

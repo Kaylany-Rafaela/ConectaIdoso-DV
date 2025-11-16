@@ -1,6 +1,5 @@
-/* ======================== */
-/* RESET BÁSICO             */
-/* ======================== */
+/* Reset Básico */
+
 * {
   margin: 0;
   padding: 0;
@@ -8,20 +7,20 @@
   font-family: Arial, sans-serif;
 }
 
-/* ======================== */
-/* ESTRUTURA GERAL DAS PÁGINAS */
-/* ======================== */
+/* Estrutura Geral das Páginas */
+
 body {
   display: flex;
-  justify-content: center; 
-  align-items: center;     
+  justify-content: center;
+  align-items: center;
   height: 100vh;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }
 
-/* Fundos por página */
+/* Fundos das páginas */
+
 body.pagina-login {
   background-image: url("/images/fundo-login.png");
 }
@@ -34,28 +33,45 @@ body.pagina-painel {
   background-image: url("/images/fundo-painel.png");
 }
 
-body.pagina-biblioteca {
-  background-image: url("/images/fundo-biblioteca.png");
+body.pagina-painel-normal {
+  background-image: url("/images/fundo-painel.png");
 }
 
-/* ======================== */
-/* CAIXA CENTRAL            */
-/* ======================== */
+body.pagina-painel-adm {
+  background-image: url("/images/fundo-chat.png");
+}
+
+body.pagina-chat {
+  background-image: url("/images/fundo-chat.png");
+}
+
+body.pagina-biblioteca {
+  background-image: url("/images/undo-biblioteca.png");
+}
+
+body.pagina-perfil {
+  background-image: url("/images/fundo-chat.png");
+}
+
+/* Caixa Central */
+
 .caixa {
   background: rgba(255, 255, 255, 0.95);
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 20px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 20px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 1100px;
-  height: 600px;
+  width: min(1100px, 96%);
+  max-width: 1100px;
+  /* Use max-height to keep box inside viewport and allow internal scrolling when necessário */
+  max-height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
+  overflow: auto;
 }
 
-/* ======================== */
-/* CABEÇALHO COM LOGO E BOTÕES */
-/* ======================== */
+/* Cabeçalho */
+
 .cabecalho {
   display: flex;
   justify-content: space-between;
@@ -65,21 +81,6 @@ body.pagina-biblioteca {
 
 .logo {
   height: 90px;
-}
-
-/* Botões no topo */
-.btn-voltar {
-  background: #e67e22;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.btn-voltar:hover {
-  background: #cf6d17;
 }
 
 .btn-sair {
@@ -96,9 +97,22 @@ body.pagina-biblioteca {
   background: #c0392b;
 }
 
-/* ======================== */
-/* LOGIN & CADASTRO         */
-/* ======================== */
+.btn-voltar {
+  background: #e67e22;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.btn-voltar:hover {
+  background: #cf6d17;
+}
+
+/* Login e Cadastro */
+
 body.pagina-login .caixa,
 body.pagina-cadastrar .caixa {
   justify-content: center;
@@ -137,19 +151,20 @@ input {
 }
 
 /* Opções extras no login */
+
 .opcoes-container {
   display: flex;
-  justify-content: space-between;  
-  align-items: center;             
+  justify-content: space-between;
+  align-items: center;
   width: 80%;
   margin: 10px auto;
 }
 
 .lembrar-acesso {
-  display: flex;          
-  align-items: center;    
-  gap: 10px;              
-  font-size: 16px;        
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
 }
 
 .esqueceu-senha {
@@ -161,164 +176,155 @@ input {
   text-decoration: underline;
 }
 
+.container-inscrever {
+  margin-top: 15px;
+  font-size: 16px;
+}
+
+.container-inscrever a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.container-inscrever a:hover {
+  text-decoration: underline;
+}
+
 /* ======================== */
-/* PAINEL                   */
+/* TOGGLE ADMINISTRADOR     */
 /* ======================== */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.toggle-label {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Checkbox invisível */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* Quando ativado */
+.switch input:checked + .slider {
+  background-color: #27ae60;
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Painel */
+
+body.pagina-painel h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
 body.pagina-painel .menu {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); 
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   margin-top: 30px;
   align-items: stretch;
 }
 
-body.pagina-painel .menu button {
-  padding: 25px;
-  font-size: 20px;
-  border: none;
-  border-radius: 12px;
-  color: #fff;
-  transition: transform 0.2s;
-}
+/* Menu do Painel */
 
-body.pagina-painel .menu button:hover {
-  transform: scale(1.05);
-}
-
-body.pagina-painel .botao-biblioteca { background: #3498db; }
-body.pagina-painel .botao-agenda     { background: #f39c12; }
-body.pagina-painel .botao-chat       { background: #27ae60; }
-body.pagina-painel .botao-emergencia { background: #e74c3c; }
-
-
-/* ======================== */
-/* BIBLIOTECA               */
-/* ======================== */
-body.pagina-biblioteca .caixa {
-  justify-content: flex-start;
-}
-
-.cartoes {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
-  margin-top: 30px;
-}
-
-.cartao {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  padding: 20px;
-  transition: transform 0.2s;
-  text-align: center;
-}
-
-.cartao:hover {
-  transform: translateY(-5px);
-}
-
-.cartao img.icone {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 10px;
-}
-
-.cartao h3 {
-  font-size: 22px;
-  margin-bottom: 5px;
-}
-
-.cartao p {
-  font-size: 16px;
-  color: #555;
-}
-
-/* Barrinhas coloridas */
-.cartao-audio { border-top: 5px solid #3498db; }
-.cartao-texto { border-top: 5px solid #2ecc71; }
-.cartao-video { border-top: 5px solid #e67e22; }
-
-
-/* menu: layout responsivo e uniforme para N botões */
 .menu {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* ajusta automaticamente */
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   margin-top: 30px;
-  align-items: stretch; /* garante que todos tenham altura igual */
+  align-items: stretch;
 }
 
-/* estilo base dos botões do menu - bloco com ícone + texto */
+/* Botões do menu */
+
 .menu-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 18px;
+  padding: 25px;
+  border: none;
   border-radius: 12px;
   color: #fff;
+  font-size: 20px;
   cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-  height: 150px;
-  text-align: center;
-  border: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 180px;
 }
 
-/* efeito hover */
 .menu-item:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* ícone dentro do botão */
 .icone-menu {
   width: 64px;
   height: 64px;
   object-fit: contain;
 }
 
-/* classes de cores (compatíveis com seus nomes anteriores) */
+/* Cores dos botões */
+
 .botao-biblioteca { background: #3498db; }
 .botao-agenda     { background: #f39c12; }
 .botao-chat       { background: #27ae60; }
 .botao-emergencia { background: #e74c3c; }
 .botao-perfil     { background: #8e44ad; }
 
-/* texto dentro do botão */
 .menu-item span {
   font-size: 20px;
   font-weight: 600;
-  display: block;
 }
 
-body.pagina-biblioteca .cartoes {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
-  margin-top: 30px;
-}
-
-body.pagina-biblioteca .cartao {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  padding: 20px;
-  transition: transform 0.2s;
-  text-align: center;
-}
-
-body.pagina-biblioteca .cartao:hover {
-  transform: translateY(-5px);
-}
-
-/* ======================== */
-/* CHAT                     */
-/* ======================== */
-body.pagina-chat {
-  background-image: url("/images/fundo-chat.png");
-}
+/* Chat */
 
 body.pagina-chat .caixa {
   justify-content: space-between;
@@ -338,7 +344,7 @@ body.pagina-chat .caixa {
   gap: 10px;
 }
 
-/* Mensagem enviada */
+/* Mensagens */
 .mensagem.enviada {
   align-self: flex-end;
   background: #4a90e2;
@@ -349,7 +355,6 @@ body.pagina-chat .caixa {
   word-wrap: break-word;
 }
 
-/* Mensagem recebida (exemplo futuro) */
 .mensagem.recebida {
   align-self: flex-start;
   background: #e5e5ea;
@@ -360,7 +365,8 @@ body.pagina-chat .caixa {
   word-wrap: break-word;
 }
 
-/* Entrada de texto e botão */
+/* Entrada de mensagem */
+
 .entrada-mensagem {
   display: flex;
   gap: 10px;
@@ -388,13 +394,530 @@ body.pagina-chat .caixa {
   background: #357abd;
 }
 
+/* Biblioteca e Conteúdos*/
+
+body.pagina-biblioteca .caixa {
+  justify-content: flex-start;
+}
+
+.cabecalho-pagina {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.titulo-principal {
+  font-size: 32px;
+  color: #333;
+}
+
+.subtitulo {
+  font-size: 18px;
+  color: #777;
+  margin-top: 5px;
+}
+
+/* Cartões da biblioteca */
+.cartoes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.cartao {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  transition: transform 0.2s;
+  text-align: center;
+  cursor: pointer;
+}
+
+.cartao:hover {
+  transform: translateY(-5px);
+}
+
+.cartao img.icone {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 10px;
+}
+
+.cartao h3 {
+  font-size: 22px;
+  margin-bottom: 5px;
+}
+
+.cartao p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Barrinhas coloridas dos campos da biblioteca */
+.cartao-audio { border-top: 5px solid #3498db; }
+.cartao-texto { border-top: 5px solid #2ecc71; }
+.cartao-video { border-top: 5px solid #e67e22; }
+
+/* Lista de Conteúdos */
+
+.lista-conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.item-lista {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e0e0e0;
+  transition: transform 0.2s ease;
+  position: relative;
+}
+
+.item-lista:hover {
+  transform: translateY(-4px);
+}
+
+/* Ícone circular */
+.item-icone {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: #ddd;
+}
+
+.item-icone img {
+  width: 30px;
+}
+
+/* Informações */
+.item-info {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.item-info h4 {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.item-info p {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Metadados */
+.item-meta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 13px;
+  color: #888;
+  margin-top: 8px;
+}
+
+.item-meta img {
+  width: 14px;
+  opacity: 0.6;
+}
+
+/* Ação */
+.item-acao {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.btn-assistir {
+  background: #e67e22;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.btn-assistir:hover {
+  background: #cf6d17;
+}
+
+/* Tags de Categorias */
+
+.tag-categoria {
+  background: #e74c3c;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.tag-categoria.azul { background: #3498db; }
+.tag-categoria.verde { background: #27ae60; }
+.tag-categoria.seguranca { background: #e74c3c; }
+.tag-categoria.privacidade { background: #3498db; }
+.tag-categoria.tecnologia { background: #9b59b6; }
+.tag-categoria.geral { background: #7f8c8d; }
+.tag-categoria.iniciante { background-color: #27ae60; }
+.tag-categoria.intermediario { background-color: #f39c12; }
+.tag-categoria.avancado { background-color: #e74c3c; }
+
+/* Botão de Adicionar */
+
+.area-botao-adicionar {
+  margin-top: 20px;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.btn-adicionar {
+  background: #27ae60;
+  color: #fff;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-adicionar:hover {
+  background: #219d52;
+}
+
+/* Modal Padrão */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 40px;
+}
+
+.modal-caixa-grande {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1000px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-duas-colunas {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 30px;
+  padding: 30px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.modal-coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-titulo {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Campos */
+.form-grupo label {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.form-grupo input,
+.form-grupo select {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Editor */
+.form-grupo-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+trix-editor {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Ações do modal */
+.modal-acoes-rodape {
+  padding: 20px 30px;
+  border-top: 1px solid #eee;
+  background: #fff;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-acoes-rodape button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  background: #ccc;
+  color: #333;
+}
+
+/* Player de Áudio */
+
+.item-lista.tocando {
+  border-color: #3498db;
+  box-shadow: 0 8px 16px rgba(52, 152, 219, 0.2);
+}
+
+.audio-progresso-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background-color: #e0e0e0;
+  display: none;
+}
+
+.audio-progresso-barra {
+  width: 0%;
+  height: 100%;
+  background-color: #3498db;
+  border-radius: 0 4px 4px 0;
+}
+
+.audio-tempo {
+  position: absolute;
+  bottom: 12px;
+  right: 15px;
+  font-size: 12px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: none;
+}
+
+.item-lista.tocando .audio-progresso-container,
+.item-lista.tocando .audio-tempo {
+  display: block;
+}
+
+.item-lista.audio .item-acao .icone-volume {
+  width: 32px;
+  height: 32px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.item-lista.audio .item-acao .icone-volume:hover {
+  opacity: 1;
+}
+
+/* Ajustes finais da aba biblioteca */
+
+#player-youtube-escondido {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+
+/* Perfil */
+
+.conteudo-perfil {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  flex: 1;
+  gap: 30px;
+  overflow-y: auto;          
+  padding: 10px;
+  margin-top: 10px;
+  max-height: calc(100% - 100px);
+  scrollbar-width: thin;
+}
+
+.conteudo-perfil::-webkit-scrollbar {
+  width: 6px;
+}
+
+.conteudo-perfil::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.bloco-perfil {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  width: 80%;
+  text-align: left;
+  border-left: 6px solid #4a90e2;
+}
+
+.bloco-perfil h3 {
+  font-size: 22px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.bloco-perfil label {
+  display: block;
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.bloco-perfil input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+  background-color: #f9f9f9;
+}
+
+/* Cores para os blocos */
+.bloco-idoso { border-left-color: #3498db; }
+.bloco-admin { border-left-color: #27ae60; }
+
+/* Botões de Ação */
+
+.acoes-perfil {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.btn-editar {
+  background: #3498db;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-editar:hover {
+  background: #2e80c7;
+}
+
+.btn-salvar {
+  background: #27ae60;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-salvar:hover {
+  background: #219150;
+}
+
+/* Grid simples para formulários (2 campos por linha) */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+@media (max-width: 760px) {
+  .form-grid { grid-template-columns: 1fr; }
+}
+
+/* Form grid specifics: make inputs/selects full-width and consistent with cadastro styles */
+.form-grid .column-left,
+.form-grid .column-right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-grid .form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.form-grid .form-group input,
+.form-grid .form-group select,
+.form-grid .form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.form-grid .form-group input:focus,
+.form-grid .form-group select:focus,
+.form-grid .form-group textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74,144,226,0.12);
+}
 /* ======================== */
 /* AGENDA                   */
 /* ======================== */
 
 /* Fundo exclusivo da agenda */
 body.pagina-agenda {
-  background-image: url("images/fundo-chat.png");
+  background-image: url("/images/fundo-chat.png");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -406,11 +929,12 @@ body.pagina-agenda .caixa {
   padding: 40px;
   border-radius: 12px;
   box-shadow: 0 20px 12px rgba(0,0,0,0.1);
-  width: 1100px;
-  height: 600px;
+  width: min(1100px, 96%);
+  max-width: 1100px;
+  max-height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: auto;
 }
 
 /* Conteúdo da agenda */
@@ -491,4 +1015,14 @@ body.pagina-agenda .caixa {
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+/* marcador colorido dentro do calendário */
+.dia-ponto {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: 6px;
+  vertical-align: middle;
 }

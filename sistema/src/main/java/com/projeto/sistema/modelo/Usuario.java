@@ -21,6 +21,8 @@ public class Usuario {
     private String senha;
     private String email;
     private String contato;
+    private String endereco;
+    private Boolean isAdmin = false;
 
     // Construtores
     public Usuario() {}
@@ -31,6 +33,24 @@ public class Usuario {
         this.senha = senha;
         this.email = email;
         this.contato = contato;
+    }
+
+    // opcional: construtor com endereco
+    public Usuario(String nome, String telefone, String contato, String senha, String email, String endereco) {
+        this.nome = nome;
+        this.telefone = telefone;
+        this.senha = senha;
+        this.email = email;
+        this.contato = contato;
+        this.endereco = endereco;
+    }
+
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     // Getters e Setters
@@ -79,5 +99,13 @@ public class Usuario {
 
     public void setContato(String contato) {
         this.contato = contato;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 }
