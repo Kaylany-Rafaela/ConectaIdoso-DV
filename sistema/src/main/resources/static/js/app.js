@@ -121,10 +121,12 @@ function chamarEmergencia() {
     alert("🚨 Ligando para o contato de emergência...");
 }
 
+/* ======================== */
+/* CHAT - Integração GPT (Tom) */
+/* ======================== */
 
-/* ======================== */
-/* CHAT - Envio de Mensagens */
-/* ======================== */
+// Histórico da conversa para manter contexto
+let chatHistory = [];
 
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("inputMensagem");
@@ -132,23 +134,85 @@ document.addEventListener("DOMContentLoaded", () => {
   const areaMensagens = document.getElementById("areaMensagens");
 
   if (input && btnEnviar && areaMensagens) {
+
+    // Adiciona mensagem na tela
     function adicionarMensagem(texto, tipo) {
       if (!texto) return;
+      
       const msg = document.createElement("div");
       msg.className = "mensagem " + tipo;
-      msg.textContent = texto;
+      // Converte quebras de linha para HTML
+      msg.innerHTML = texto.replace(/\n/g, '<br>');
+      
       areaMensagens.appendChild(msg);
       areaMensagens.scrollTop = areaMensagens.scrollHeight;
     }
 
-    function enviarMensagem() {
-      const texto = input.value.trim();
-      if (texto === "") return;
-      adicionarMensagem(texto, "enviada");
-      input.value = "";
-      input.focus();
+    // Feedback visual "Tom está digitando..."
+    function mostrarDigitando() {
+        const loader = document.createElement("div");
+        loader.id = "loader-tom";
+        loader.textContent = "Tom está digitando...";
+        areaMensagens.appendChild(loader);
+        areaMensagens.scrollTop = areaMensagens.scrollHeight;
     }
 
+    function removerDigitando() {
+        const loader = document.getElementById("loader-tom");
+        if (loader) loader.remove();
+    }
+
+    // Função Principal de Envio
+    async function enviarMensagem() {
+      const textoUsuario = input.value.trim();
+      if (textoUsuario === "") return;
+
+      // 1. Exibe msg do usuário imediatamente
+      adicionarMensagem(textoUsuario, "enviada");
+      input.value = "";
+      input.focus();
+
+      // 2. Mostra que o Tom está pensando
+      mostrarDigitando();
+
+      try {
+        // 3. Prepara dados para o backend (ChatRequest.java)
+        const payload = {
+            message: textoUsuario,
+            history: chatHistory
+        };
+
+        // 4. Chamada POST para o backend
+        const response = await fetch("/api/chat-gpt", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        removerDigitando();
+
+        if (response.ok) {
+            const data = await response.json(); // ChatResponse.java
+            const respostaTom = data.reply;
+
+            // 5. Exibe a resposta do Tom
+            adicionarMensagem(respostaTom, "recebida");
+
+            // 6. Atualiza histórico local
+            chatHistory.push({ role: "user", content: textoUsuario });
+            chatHistory.push({ role: "assistant", content: respostaTom });
+
+        } else {
+            adicionarMensagem("Ocorreu um erro ao falar com o Tom. Tente novamente.", "recebida");
+        }
+      } catch (error) {
+        removerDigitando();
+        console.error("Erro no chat:", error);
+        adicionarMensagem("Sem conexão com o servidor.", "recebida");
+      }
+    }
+
+    // Event Listeners
     btnEnviar.addEventListener("click", (e) => {
       e.preventDefault();
       enviarMensagem();
