@@ -19,7 +19,8 @@ mvn package
 mvn spring-boot:run
 
 Após iniciar o servidor, acesse o sistema pelo navegador em:  
-[http://localhost:8080/login.html](http://localhost:8080/login.html)
+[http://localhost:8080/login.html]
+(http://localhost:8080/login.html)
 
 No frontend foram implementadas as seguintes funcionalidades: o botão de sair agora encerra a sessão do usuário, em vez de apenas redirecionar para o login; o botão de cadastrar envia uma requisição ao backend para salvar o usuário no banco de dados; o botão de login faz uma requisição ao backend para verificar se o usuário existe e se a senha está correta; e foi criado um script de verificação de sessão, garantindo que apenas usuários logados possam acessar as outras páginas. Caso contrário, o sistema redireciona automaticamente para a tela de login.
 
