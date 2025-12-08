@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Conecta Idoso - Textos</title>
+  <link rel="stylesheet" href="/css/estilo.css">
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
+</head>
+<body class="pagina-conteudo">
+  <div class="caixa">
+    <div class="cabecalho">
+      <button class="btn-voltar" onclick="window.location.href='biblioteca.html'">Voltar</button>
+      <img src="/images/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
+      <button class="btn-sair" onclick="sair()">Sair</button>
+    </div>
+    <div class="cabecalho-pagina">
+      <h1 class="titulo-principal">Textos</h1>
+      <p class="subtitulo">Escolha um guia para ler:</p>
+    </div>
+    <main class="lista-conteudo" id="lista-de-textos"></main>
+    <div class="area-botao-adicionar">
+      <button class="btn-adicionar" id="btn-abrir-modal">+ Adicionar Texto</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-adicionar-texto">
+    <div class="modal-caixa-grande">
+      <form id="form-texto" class="form-duas-colunas">
+        <div class="modal-coluna">
+          <h3 class="modal-titulo">Adicionar Novo Texto</h3>
+          <div class="form-grupo">
+            <label for="texto-titulo">Título</label>
+            <input type="text" id="texto-titulo" required>
+          </div>
+          <div class="form-grupo">
+            <label for="texto-desc">Descrição Curta</label>
+            <input type="text" id="texto-desc" required>
+          </div>
+          <div class="form-grupo">
+            <label for="texto-tag">Categoria</label>
+            <select id="texto-tag">
+              <option value="Iniciante">Iniciante</option>
+              <option value="Intermediário">Intermediário</option>
+              <option value="Avançado">Avançado</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-coluna">
+          <div class="form-grupo form-grupo-editor">
+            <label for="texto-conteudo">Conteúdo Completo</label>
+            <input id="texto-conteudo" type="hidden" name="content">
+            <trix-editor input="texto-conteudo"></trix-editor>
+          </div>
+        </div>
+        
+        <div class="modal-acoes-rodape">
+          <button type="button" class="btn-cancelar" id="btn-fechar-modal">Cancelar</button>
+          <button type="submit" class="btn-salvar">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
+  <script>
+    // Todo o seu JavaScript continua exatamente o mesmo da versão anterior.
+    // Cole aqui o script completo da resposta anterior.
+    function renderizarTextos() {
+      const listaContainer = document.getElementById('lista-de-textos');
+      const textos = JSON.parse(sessionStorage.getItem('meusTextos')) || [];
+      listaContainer.innerHTML = '';
+      textos.forEach(texto => {
+        const tagClass = texto.tag ? texto.tag.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") : 'iniciante';
+        const textoHTML = `
+          <a href="texto-detalhe.html?id=${texto.id}" style="text-decoration: none; color: inherit;">
+            <div class="item-lista texto">
+              <div class="item-icone"><img src="/images/livro.png" alt="Livro"></div>
+              <div class="item-info">
+                <h4>${texto.titulo} <span class="tag-categoria ${tagClass}">${texto.tag}</span></h4>
+                <p>${texto.descricao}</p>
+              </div>
+              <div class="item-acao"><span class="icone-navegar">></span></div>
+            </div>
+          </a>
+        `;
+        listaContainer.innerHTML += textoHTML;
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const modal = document.getElementById('modal-adicionar-texto');
+      const btnAbrir = document.getElementById('btn-abrir-modal');
+      const btnFechar = document.getElementById('btn-fechar-modal');
+      const form = document.getElementById('form-texto');
+      const trixEditor = document.querySelector("trix-editor");
+
+      if (!sessionStorage.getItem('meusTextos')) {
+        const textosIniciais = [
+          { 
+            id: 1, 
+            titulo: 'Guia básico do smartphone', 
+            descricao: 'Aprenda a usar as funções básicas do seu celular',
+            tag: 'Iniciante',
+            conteudo: '<div><h2>Como usar seu smartphone - Guia básico</h2><h3>1. Ligando e desligando...</h3></div>'
+          },
+          { 
+            id: 2, 
+            titulo: 'Aplicativos úteis para o dia a dia', 
+            descricao: 'Conheça aplicativos que podem facilitar sua vida',
+            tag: 'Intermediário',
+            conteudo: '<div><h2>Aplicativos que Ajudam</h2><h3>1. Transporte</h3><ul><li>Uber, 99</li></ul><h3>2. Bancos</h3><ul><li>Aplicativo do seu banco para ver saldo e pagar contas.</li></ul></div>'
+          }
+        ];
+        sessionStorage.setItem('meusTextos', JSON.stringify(textosIniciais));
+      }
+
+      btnAbrir.addEventListener('click', () => { modal.style.display = 'flex'; });
+      btnFechar.addEventListener('click', () => { modal.style.display = 'none'; });
+
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const titulo = document.getElementById('texto-titulo').value;
+        const descricao = document.getElementById('texto-desc').value;
+        const tag = document.getElementById('texto-tag').value;
+        const conteudo = document.getElementById('texto-conteudo').value;
+
+        const textosAtuais = JSON.parse(sessionStorage.getItem('meusTextos')) || [];
+        const novoId = Date.now();
+
+        textosAtuais.push({ id: novoId, titulo, descricao, tag, conteudo });
+        sessionStorage.setItem('meusTextos', JSON.stringify(textosAtuais));
+
+        modal.style.display = 'none';
+        trixEditor.editor.loadHTML("");
+        form.reset();
+        renderizarTextos();
+      });
+
+      renderizarTextos();
+    });
+  </script>
+  <script src="/js/app.js"></script>
+  <script>
+    // Checa se existe usuário logado no localStorage
+    var usuarioJSON = localStorage.getItem("usuarioLogado");
+    var usuarioLogado = JSON.parse(usuarioJSON)
+
+    if (!usuarioLogado) {
+      alert("Você precisa estar logado para acessar esta página.");
+      window.location.href = "login.html";
+    }
+    const h2 = document.getElementById("bem-vindo");
+    h2.textContent = `Bem-vindo(a), ${usuarioLogado.nome}!`;
+  </script>
+</body>
+</html>

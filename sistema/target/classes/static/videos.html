@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Conecta Idoso - Vídeos</title>
+  <link rel="stylesheet" href="/css/estilo.css">
+</head>
+<body class="pagina-conteudo">
+  <div class="caixa">
+    <div class="cabecalho">
+      <button class="btn-voltar" onclick="window.location.href='biblioteca.html'">Voltar</button>
+      <img src="/images/logo-pequena.jpeg" alt="Conecta Idoso" class="logo">
+      <button class="btn-sair" onclick="sair()">Sair</button>
+    </div>
+
+    <div class="cabecalho-pagina">
+      <h1 class="titulo-principal">Vídeos</h1>
+      <p class="subtitulo">Escolha um vídeo para assistir:</p>
+    </div>
+
+    <main class="lista-conteudo" id="lista-de-videos"></main>
+
+    <div class="area-botao-adicionar">
+      <button class="btn-adicionar" id="btn-abrir-modal">+ Adicionar Vídeo</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-adicionar-video">
+    <div class="modal-caixa-grande">
+      <form id="form-video" class="form-duas-colunas">
+        <div class="modal-coluna">
+          <h3 class="modal-titulo">Adicionar Novo Vídeo</h3>
+          <div class="form-grupo">
+            <label for="video-titulo">Título do Vídeo</label>
+            <input type="text" id="video-titulo" required>
+          </div>
+          <div class="form-grupo">
+            <label for="video-desc">Descrição</label>
+            <input type="text" id="video-desc" required>
+          </div>
+          <div class="form-grupo">
+            <label for="video-link">Link do YouTube</label>
+            <input type="url" id="video-link" placeholder="Cole o link do YouTube aqui..." required>
+          </div>
+        </div>
+
+        <div class="modal-coluna">
+          <div class="form-grupo form-grupo-editor">
+            <label>Pré-visualização</label>
+            <div class="preview-container" id="video-preview-container">
+              <p class="preview-placeholder">A pré-visualização do vídeo aparecerá aqui.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-acoes-rodape">
+          <button type="button" class="btn-cancelar" id="btn-fechar-modal">Cancelar</button>
+          <button type="submit" class="btn-salvar">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function extrairVideoID(url) {
+      try {
+        const urlObj = new URL(url);
+        if (urlObj.hostname.includes("youtube.com")) return urlObj.searchParams.get("v");
+        if (urlObj.hostname.includes("youtu.be")) return urlObj.pathname.slice(1);
+      } catch (e) { console.error("URL inválida:", e); }
+      return null;
+    }
+
+    function renderizarVideos() {
+      const listaContainer = document.getElementById('lista-de-videos');
+      const videos = JSON.parse(sessionStorage.getItem('meusVideos')) || [];
+      listaContainer.innerHTML = '';
+      videos.forEach(video => {
+        const videoHTML = `
+          <div class="item-lista video">
+            <div class="item-icone"><img src="/images/video.png" alt="Play"></div>
+            <div class="item-info">
+              <h4>${video.titulo}</h4>
+              <p>${video.descricao}</p>
+              <div class="item-meta">
+                <span><img src="/images/tempo.png" alt="Duração"> --:--</span>
+                </div>
+            </div>
+            <div class="item-acao">
+              <a href="video-player.html?video=${video.id}&titulo=${encodeURIComponent(video.titulo)}" class="btn-assistir">Assistir</a>
+            </div>
+          </div>
+        `;
+        listaContainer.innerHTML += videoHTML;
+      });
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const modal = document.getElementById('modal-adicionar-video');
+      const btnAbrir = document.getElementById('btn-abrir-modal');
+      const btnFechar = document.getElementById('btn-fechar-modal');
+      const form = document.getElementById('form-video');
+      
+      const linkInput = document.getElementById('video-link');
+      const previewContainer = document.getElementById('video-preview-container');
+      const placeholder = '<p class="preview-placeholder">A pré-visualização do vídeo aparecerá aqui.</p>';
+
+      if (!sessionStorage.getItem('meusVideos')) {
+        const videosIniciais = [
+          { titulo: 'Como usar o WhatsApp', descricao: 'Aprenda a usar o WhatsApp de forma simples e fácil', id: 'lJ_Y9OfDNOo' },
+          { titulo: 'Fazendo videochamadas', descricao: 'Como fazer chamadas de vídeo no seu smartphone', id: 'k7aOj4f48Is' }
+        ];
+        sessionStorage.setItem('meusVideos', JSON.stringify(videosIniciais));
+      }
+
+      btnAbrir.addEventListener('click', () => { modal.style.display = 'flex'; });
+      btnFechar.addEventListener('click', () => {
+        modal.style.display = 'none';
+        previewContainer.innerHTML = placeholder;
+        form.reset();
+      });
+
+      linkInput.addEventListener('input', function() {
+        const url = linkInput.value;
+        const videoId = extrairVideoID(url);
+
+        if (videoId) {
+          previewContainer.innerHTML = `
+            <div class="video-responsivo">
+              <iframe src="https://www.youtube.com/embed/${videoId}" title="Pré-visualização" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+          `;
+        } else {
+          previewContainer.innerHTML = placeholder;
+        }
+      });
+
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const titulo = document.getElementById('video-titulo').value;
+        const descricao = document.getElementById('video-desc').value;
+        const link = linkInput.value;
+        const videoID = extrairVideoID(link);
+        
+        if (!videoID) {
+          alert('Por favor, insira um link válido do YouTube.');
+          return;
+        }
+
+        const videosAtuais = JSON.parse(sessionStorage.getItem('meusVideos')) || [];
+        videosAtuais.push({ titulo: titulo, descricao: descricao, id: videoID });
+        sessionStorage.setItem('meusVideos', JSON.stringify(videosAtuais));
+
+        btnFechar.click();
+        renderizarVideos();
+      });
+
+      renderizarVideos();
+    });
+  </script>
+  <script src="/js/app.js"></script>
+  <script>
+    // Checa se existe usuário logado no localStorage
+    var usuarioJSON = localStorage.getItem("usuarioLogado");
+    var usuarioLogado = JSON.parse(usuarioJSON)
+
+    if (!usuarioLogado) {
+      alert("Você precisa estar logado para acessar esta página.");
+      window.location.href = "login.html";
+    }
+   const h2 = document.getElementById("bem-vindo");
+    if (h2) {
+      h2.textContent = `Bem-vindo(a), ${usuarioLogado.nome}!`;
+    }
+  </script>
+</body>
+</html>

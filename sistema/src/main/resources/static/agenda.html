@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Agenda</title>
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+
+<body class="pagina-agenda">
+  <div class="caixa">
+
+    <!-- CABEÇALHO PADRÃO -->
+    <div class="cabecalho">
+      <button class="btn-voltar" onclick="voltarParaPainel()">Voltar</button>
+      <img src="images/logo-pequena.jpeg" class="logo" alt="Logo">
+      <button class="btn-sair" onclick="sair()">Sair</button>
+    </div>
+
+    <h2>Agenda</h2>
+
+    <div class="conteudo-agenda">
+
+      <!-- CALENDÁRIO -->
+      <div class="bloco-calendario">
+        <table class="calendario" id="calendario">
+          <thead>
+            <tr>
+              <th>Dom</th><th>Seg</th><th>Ter</th>
+              <th>Qua</th><th>Qui</th><th>Sex</th><th>Sáb</th>
+            </tr>
+          </thead>
+          <tbody id="dias"></tbody>
+        </table>
+      </div>
+
+      <!-- LADO DIREITO -->
+      <div class="agenda-lateral">
+
+        <h3 id="titulo-dia">Escolha um dia</h3>
+        <div id="diaEscolhido" class="diaEscolhidoText"></div>
+
+        <div class="lista-agenda" id="lista-compromissos">
+          <p class="mensagem-vazia">Nenhum compromisso selecionado.</p>
+        </div>
+
+        <!-- Botão aparece habilitado somente para ADMIN -->
+        <button id="btnAdd" class="btn-add" disabled>+ Cadastrar Compromisso</button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE NOVO COMPROMISSO -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-box">
+      <h3>Novo Compromisso</h3>
+
+      <input type="text" id="tituloComp" placeholder="Título do compromisso">
+      <input type="time" id="horaComp">
+
+      <button id="btnSalvar">Salvar</button>
+      <button onclick="document.getElementById('modal').style.display='none'" class="btn-cancelar">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- MODAL DE EDIÇÃO -->
+  <div class="modal-edit" id="modalEdit">
+    <div class="modal-edit-box">
+      <h3>Editar Compromisso</h3>
+
+      <input type="text" id="editarTitulo" placeholder="Título">
+      <input type="time" id="editarHora">
+
+      <button onclick="salvarEdicao()">Salvar alterações</button>
+      <button onclick="document.getElementById('modalEdit').style.display='none'" class="btn-cancelar">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- SCRIPT PRINCIPAL -->
+  <script src="js/app.js"></script>
+</body>
+</html>

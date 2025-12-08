@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Conecta Idoso - Fale com o Tom</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/estilo.css">
+</head>
+<body class="pagina-chat">
+  <div class="caixa">
+
+    <div class="cabecalho">
+      <button class="btn-voltar" onclick="window.location.href='painel.html'">Voltar</button>
+      
+      <h2>Chat com o Tom</h2>
+      
+      <button class="btn-sair" onclick="sair()">Sair</button>
+    </div>
+
+    <div id="areaMensagens" class="area-mensagens">
+        <div class="mensagem recebida">
+            Olá! Eu sou o Tom. Como posso ajudar você hoje?
+        </div>
+    </div>
+
+    <div class="entrada-mensagem">
+      <input type="text" id="inputMensagem" placeholder="Digite aqui sua mensagem..." autocomplete="off">
+      <button id="btnEnviar" type="button">Enviar</button>
+    </div>
+
+  </div>
+
+  <script src="/js/app.js"></script>
+  <script>
+    // Apenas verificação de segurança (Login)
+    const usuarioJSON = localStorage.getItem("usuarioLogado");
+    if (!usuarioJSON) {
+      alert("Você precisa estar logado.");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
