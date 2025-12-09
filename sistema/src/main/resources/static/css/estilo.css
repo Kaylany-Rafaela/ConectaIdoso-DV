@@ -768,27 +768,60 @@ trix-editor {
 
 /* Ações do modal */
 .modal-acoes-rodape {
-  padding: 20px 30px;
-  border-top: 1px solid #eee;
-  background: #fff;
+  /* Layout Flex simples */
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+  justify-content: flex-end; /* Botões à direita */
+  align-items: center;       /* Centralizado verticalmente */
+  gap: 15px;                 /* Espaço entre botões */
+  
+  /* Tamanho e Cor */
+  width: 100%;
+  padding: 20px 30px;        /* Padding confortável */
+  background-color: #f9f9f9; /* Cor de fundo leve para destacar o rodapé */
+  border-top: 1px solid #e0e0e0;
+  
+  /* Garante que não estique */
+  flex-shrink: 0; 
+  box-sizing: border-box;
 }
 
+/* Mantém os botões bonitos */
 .modal-acoes-rodape button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
+  padding: 0 25px;
+  height: 48px;
   font-size: 16px;
-  font-weight: bold;
+  border-radius: 8px;
+  border: none;
   cursor: pointer;
+  font-weight: bold;
 }
 
-.btn-cancelar {
-  background: #ccc;
-  color: #333;
+/* Cores dos botões (Mantém as suas) */
+.modal-acoes-rodape .btn-cancelar { background-color: #95a5a6; color: #fff; }
+.modal-acoes-rodape .btn-cancelar:hover { background-color: #7f8c8d; }
+.modal-acoes-rodape .btn-salvar { background-color: #27ae60; color: #fff; }
+.modal-acoes-rodape .btn-salvar:hover { background-color: #219150; }
+
+/* Faz os botões do editor quebrarem linha se faltar espaço */
+trix-toolbar .trix-button-row {
+  display: flex;
+  flex-wrap: wrap !important; /* O segredo: permite cair para a linha de baixo */
+  gap: 5px; /* Espacinho entre os botões */
 }
+
+/* Garante que o editor nunca ultrapasse a largura da coluna */
+trix-editor, 
+trix-toolbar {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Ajuste fino para os grupos de botões não ficarem colados */
+.trix-button-group {
+  margin-bottom: 5px !important;
+  border-bottom: none !important; /* Remove linha extra se houver */
+}
+
 
 /* Player de Áudio */
 

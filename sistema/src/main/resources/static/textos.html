@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Conecta Idoso - Textos</title>
-  <link rel="stylesheet" href="/css/estilo.css">
+  <link rel="stylesheet" href="/css/estilo.css?v=9">
   <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
 </head>
 <body class="pagina-conteudo">
@@ -25,47 +25,50 @@
 
   <div class="modal-overlay" id="modal-adicionar-texto">
     <div class="modal-caixa-grande">
-      <form id="form-texto" class="form-duas-colunas">
-        <div class="modal-coluna">
-          <h3 class="modal-titulo">Adicionar Novo Texto</h3>
-          <div class="form-grupo">
-            <label for="texto-titulo">Título</label>
-            <input type="text" id="texto-titulo" required>
-          </div>
-          <div class="form-grupo">
-            <label for="texto-desc">Descrição Curta</label>
-            <input type="text" id="texto-desc" required>
-          </div>
-          <div class="form-grupo">
-            <label for="texto-tag">Categoria</label>
-            <select id="texto-tag">
-              <option value="Iniciante">Iniciante</option>
-              <option value="Intermediário">Intermediário</option>
-              <option value="Avançado">Avançado</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="modal-coluna">
-          <div class="form-grupo form-grupo-editor">
-            <label for="texto-conteudo">Conteúdo Completo</label>
-            <input id="texto-conteudo" type="hidden" name="content">
-            <trix-editor input="texto-conteudo"></trix-editor>
-          </div>
-        </div>
+      
+      <form id="form-texto" style="display: flex; flex-direction: column; height: 100%;">
         
-        <div class="modal-acoes-rodape">
+        <div class="form-duas-colunas">
+            
+            <div class="modal-coluna">
+              <h3 class="modal-titulo">Adicionar Novo Texto</h3>
+              <div class="form-grupo">
+                <label for="texto-titulo">Título</label>
+                <input type="text" id="texto-titulo" required>
+              </div>
+              <div class="form-grupo">
+                <label for="texto-desc">Descrição Curta</label>
+                <input type="text" id="texto-desc" required>
+              </div>
+              <div class="form-grupo">
+                <label for="texto-tag">Categoria</label>
+                <select id="texto-tag">
+                  <option value="Iniciante">Iniciante</option>
+                  <option value="Intermediário">Intermediário</option>
+                  <option value="Avançado">Avançado</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="modal-coluna">
+              <div class="form-grupo form-grupo-editor">
+                <label for="texto-conteudo">Conteúdo Completo</label>
+                <input id="texto-conteudo" type="hidden" name="content">
+                <trix-editor input="texto-conteudo"></trix-editor>
+              </div>
+            </div>
+
+        </div> <div class="modal-acoes-rodape">
           <button type="button" class="btn-cancelar" id="btn-fechar-modal">Cancelar</button>
           <button type="submit" class="btn-salvar">Salvar</button>
         </div>
+
       </form>
     </div>
   </div>
 
   <script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
   <script>
-    // Todo o seu JavaScript continua exatamente o mesmo da versão anterior.
-    // Cole aqui o script completo da resposta anterior.
     function renderizarTextos() {
       const listaContainer = document.getElementById('lista-de-textos');
       const textos = JSON.parse(sessionStorage.getItem('meusTextos')) || [];
@@ -152,7 +155,9 @@
       window.location.href = "login.html";
     }
     const h2 = document.getElementById("bem-vindo");
-    h2.textContent = `Bem-vindo(a), ${usuarioLogado.nome}!`;
+    if(h2) {
+        h2.textContent = `Bem-vindo(a), ${usuarioLogado.nome}!`;
+    }
   </script>
 </body>
 </html>

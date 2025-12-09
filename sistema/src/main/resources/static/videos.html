@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Conecta Idoso - Vídeos</title>
-  <link rel="stylesheet" href="/css/estilo.css">
+  <link rel="stylesheet" href="/css/estilo.css?v=11">
 </head>
 <body class="pagina-conteudo">
   <div class="caixa">
@@ -27,36 +27,41 @@
 
   <div class="modal-overlay" id="modal-adicionar-video">
     <div class="modal-caixa-grande">
-      <form id="form-video" class="form-duas-colunas">
-        <div class="modal-coluna">
-          <h3 class="modal-titulo">Adicionar Novo Vídeo</h3>
-          <div class="form-grupo">
-            <label for="video-titulo">Título do Vídeo</label>
-            <input type="text" id="video-titulo" required>
-          </div>
-          <div class="form-grupo">
-            <label for="video-desc">Descrição</label>
-            <input type="text" id="video-desc" required>
-          </div>
-          <div class="form-grupo">
-            <label for="video-link">Link do YouTube</label>
-            <input type="url" id="video-link" placeholder="Cole o link do YouTube aqui..." required>
-          </div>
-        </div>
-
-        <div class="modal-coluna">
-          <div class="form-grupo form-grupo-editor">
-            <label>Pré-visualização</label>
-            <div class="preview-container" id="video-preview-container">
-              <p class="preview-placeholder">A pré-visualização do vídeo aparecerá aqui.</p>
+      
+      <form id="form-video" style="display: flex; flex-direction: column; height: 100%;">
+        
+        <div class="form-duas-colunas">
+          
+          <div class="modal-coluna">
+            <h3 class="modal-titulo">Adicionar Novo Vídeo</h3>
+            <div class="form-grupo">
+              <label for="video-titulo">Título do Vídeo</label>
+              <input type="text" id="video-titulo" required>
+            </div>
+            <div class="form-grupo">
+              <label for="video-desc">Descrição</label>
+              <input type="text" id="video-desc" required>
+            </div>
+            <div class="form-grupo">
+              <label for="video-link">Link do YouTube</label>
+              <input type="url" id="video-link" placeholder="Cole o link do YouTube aqui..." required>
             </div>
           </div>
-        </div>
-        
-        <div class="modal-acoes-rodape">
+
+          <div class="modal-coluna">
+            <div class="form-grupo form-grupo-editor">
+              <label>Pré-visualização</label>
+              <div class="preview-container" id="video-preview-container">
+                <p class="preview-placeholder">A pré-visualização do vídeo aparecerá aqui.</p>
+              </div>
+            </div>
+          </div>
+
+        </div> <div class="modal-acoes-rodape">
           <button type="button" class="btn-cancelar" id="btn-fechar-modal">Cancelar</button>
           <button type="submit" class="btn-salvar">Salvar</button>
         </div>
+
       </form>
     </div>
   </div>
@@ -160,7 +165,6 @@
   </script>
   <script src="/js/app.js"></script>
   <script>
-    // Checa se existe usuário logado no localStorage
     var usuarioJSON = localStorage.getItem("usuarioLogado");
     var usuarioLogado = JSON.parse(usuarioJSON)
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Conecta Idoso - Áudios</title>
-  <link rel="stylesheet" href="/css/estilo.css">
+  <link rel="stylesheet" href="/css/estilo.css?v=11">
 </head>
 <body class="pagina-conteudo">
   <div class="caixa">
@@ -29,45 +29,50 @@
 
   <div class="modal-overlay" id="modal-adicionar-audio">
     <div class="modal-caixa-grande">
-      <form id="form-audio" class="form-duas-colunas">
-        <div class="modal-coluna">
-          <h3 class="modal-titulo">Adicionar Novo Áudio</h3>
-          <div class="form-grupo">
-            <label for="audio-titulo">Título do Áudio</label>
-            <input type="text" id="audio-titulo" required>
-          </div>
-          <div class="form-grupo">
-            <label for="audio-desc">Descrição</label>
-            <input type="text" id="audio-desc" required>
-          </div>
-          <div class="form-grupo">
-            <label for="audio-link">Link do Vídeo/Áudio do YouTube</label>
-            <input type="url" id="audio-link" placeholder="Cole o link do YouTube aqui..." required>
-          </div>
-          <div class="form-grupo">
-            <label for="audio-tag">Categoria</label>
-            <select id="audio-tag">
-              <option value="Segurança">Segurança</option>
-              <option value="Privacidade">Privacidade</option>
-              <option value="Tecnologia">Tecnologia</option>
-              <option value="Geral">Geral</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="modal-coluna">
-          <div class="form-grupo form-grupo-editor">
-            <label>Pré-visualização</label>
-            <div class="preview-container" id="audio-preview-container">
-              <p class="preview-placeholder">A pré-visualização do vídeo/áudio aparecerá aqui.</p>
+      
+      <form id="form-audio" style="display: flex; flex-direction: column; height: 100%;">
+        
+        <div class="form-duas-colunas">
+          
+          <div class="modal-coluna">
+            <h3 class="modal-titulo">Adicionar Novo Áudio</h3>
+            <div class="form-grupo">
+              <label for="audio-titulo">Título do Áudio</label>
+              <input type="text" id="audio-titulo" required>
+            </div>
+            <div class="form-grupo">
+              <label for="audio-desc">Descrição</label>
+              <input type="text" id="audio-desc" required>
+            </div>
+            <div class="form-grupo">
+              <label for="audio-link">Link do Vídeo/Áudio do YouTube</label>
+              <input type="url" id="audio-link" placeholder="Cole o link do YouTube aqui..." required>
+            </div>
+            <div class="form-grupo">
+              <label for="audio-tag">Categoria</label>
+              <select id="audio-tag">
+                <option value="Segurança">Segurança</option>
+                <option value="Privacidade">Privacidade</option>
+                <option value="Tecnologia">Tecnologia</option>
+                <option value="Geral">Geral</option>
+              </select>
             </div>
           </div>
-        </div>
+
+          <div class="modal-coluna">
+            <div class="form-grupo form-grupo-editor">
+              <label>Pré-visualização</label>
+              <div class="preview-container" id="audio-preview-container">
+                <p class="preview-placeholder">A pré-visualização do vídeo/áudio aparecerá aqui.</p>
+              </div>
+            </div>
+          </div>
         
-        <div class="modal-acoes-rodape">
+        </div> <div class="modal-acoes-rodape">
           <button type="button" class="btn-cancelar" id="btn-fechar-modal">Cancelar</button>
           <button type="submit" class="btn-salvar">Salvar</button>
         </div>
+
       </form>
     </div>
   </div>
@@ -206,7 +211,7 @@
       btnAbrir.addEventListener('click', () => { modal.style.display = 'flex'; });
       btnFechar.addEventListener('click', () => {
           modal.style.display = 'none';
-          previewContainer.innerHTML = placeholder; // Limpa o preview
+          previewContainer.innerHTML = placeholder;
           form.reset();
       });
 
@@ -238,7 +243,7 @@
         audiosAtuais.push({ titulo, descricao, id: videoID, tag });
         sessionStorage.setItem('meusAudios', JSON.stringify(audiosAtuais));
 
-        btnFechar.click(); // Simula clique no fechar para limpar e esconder o modal
+        btnFechar.click();
         renderizarAudios();
       });
 
@@ -256,7 +261,9 @@
       window.location.href = "login.html";
     }
     const h2 = document.getElementById("bem-vindo");
-    h2.textContent = `Bem-vindo(a), ${usuarioLogado.nome}!`;
+    if(h2) {
+      h2.textContent = `Bem-vindo(a), ${usuarioLogado.nome}!`;
+    }
   </script>
 </body>
 </html>

@@ -1127,3 +1127,68 @@ async function salvarInformacoes() {
 
 window.editarInformacoes = editarInformacoes;
 window.salvarInformacoes = salvarInformacoes;
+
+/* ============================================================
+   CORREÇÃO: CARREGAR DADOS DO PERFIL AO ABRIR A PÁGINA
+   ============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+    // Se não estiver na página de perfil (se os campos não existirem), para aqui.
+    if (!document.getElementById("nomeIdosoPerfil") && !document.getElementById("nomeAdmPerfil")) {
+        return;
+    }
+
+    // 1. Pega os dados que estão salvos no navegador
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado") || "{}");
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
+
+    // 2. Mapeia: ID do Campo no HTML  <--->  Onde buscar o valor
+    const camposParaPreencher = [
+        // Campos do Idoso
+        { 
+            id: "nomeIdosoPerfil", 
+            valor: localStorage.getItem("nomeIdoso") || (!isAdmin ? usuarioLogado.nome : "") 
+        },
+        { 
+            id: "telefoneIdosoPerfil", 
+            valor: localStorage.getItem("telefoneIdoso") || (!isAdmin ? usuarioLogado.telefone : "") 
+        },
+        { 
+            id: "enderecoIdosoPerfil", 
+            valor: localStorage.getItem("enderecoIdoso") || (!isAdmin ? usuarioLogado.endereco : "") 
+        },
+
+        // Campos do Admin
+        { 
+            id: "nomeAdmPerfil", 
+            valor: localStorage.getItem("nomeAdm") || (isAdmin ? usuarioLogado.nome : "") 
+        },
+        { 
+            id: "telefoneAdmPerfil", 
+            valor: localStorage.getItem("telefoneAdm") || (isAdmin ? usuarioLogado.telefone : "") 
+        },
+        { 
+            id: "enderecoAdmPerfil", 
+            valor: localStorage.getItem("enderecoAdm") || (isAdmin ? usuarioLogado.endereco : "") 
+        }
+    ];
+
+    // 3. Loop para preencher os campos se eles existirem na tela
+    camposParaPreencher.forEach(campo => {
+        const elemento = document.getElementById(campo.id);
+        if (elemento && campo.valor) {
+            elemento.value = campo.valor;
+        }
+    });
+
+    // 4. Trava os campos (Modo Leitura) e ajusta os botões
+    const inputsPerfil = document.querySelectorAll(".bloco-perfil input");
+    if (inputsPerfil.length > 0) {
+        inputsPerfil.forEach(input => input.disabled = true);
+    }
+
+    const btnEditar = document.getElementById("btnEditar");
+    const btnSalvar = document.getElementById("btnSalvar");
+
+    if (btnEditar) btnEditar.style.display = "inline-block";
+    if (btnSalvar) btnSalvar.style.display = "none";
+});
