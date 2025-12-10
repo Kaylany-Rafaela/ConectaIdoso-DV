@@ -571,6 +571,7 @@ async function carregarAgendaUsuario() {
           const resp = await fetch(`/usuarios/por-telefone/${encodeURIComponent(contato)}`);
           if (resp.ok) {
             const idoso = await resp.json();
+            agendaUsuarioAlvoId = idoso.id;
             eventos = await fetchAgendaUsuario(idoso.id);
             // mostra botão de cadastrar
             const btn = document.getElementById('btn-cadastrar-evento');
@@ -588,6 +589,7 @@ async function carregarAgendaUsuario() {
         console.warn('admin sem contato vinculado');
       }
     } else {
+      agendaUsuarioAlvoId = usuario.id;
       eventos = await fetchAgendaUsuario(usuario.id);
     }
     window.agendaEventos = eventos;
@@ -743,6 +745,9 @@ document.addEventListener("DOMContentLoaded", function() {
 ============================================================ */
 let diaSelecionado = null;
 let indiceEditando = null;
+let agendaMesAtual = null;
+let agendaAnoAtual = null;
+let agendaUsuarioAlvoId = null;
 
 /* ============================================================
    2) FUNÇÃO DE PERMISSÃO
@@ -763,8 +768,10 @@ function gerarCalendario() {
     diasEl.innerHTML = "";
 
     const hoje = new Date();
-    const ano = hoje.getFullYear();
-    const mes = hoje.getMonth();
+    agendaAnoAtual = hoje.getFullYear();
+    agendaMesAtual = hoje.getMonth();
+    const ano = agendaAnoAtual;
+    const mes = agendaMesAtual;
 
     const primeiroDia = new Date(ano, mes, 1).getDay();
     const ultimoDia = new Date(ano, mes + 1, 0).getDate();
@@ -853,31 +860,39 @@ function ativarBotao() {
 
 function carregarCompromissos() {
     const lista = document.getElementById("lista-compromissos");
-    const agenda = JSON.parse(localStorage.getItem("agenda") || "{}");
+    if (!lista) return;
 
-    const comp = agenda[diaSelecionado] || [];
+    const eventosDia = (window.agendaEventos || [])
+      .filter(ev => {
+        if (!ev.dataHora) return false;
+        const d = new Date(ev.dataHora);
+        const ano = agendaAnoAtual !== null ? agendaAnoAtual : new Date().getFullYear();
+        const mes = agendaMesAtual !== null ? agendaMesAtual : new Date().getMonth();
+        return d.getFullYear() === ano && d.getMonth() === mes && d.getDate() === Number(diaSelecionado);
+      })
+      .sort((a, b) => new Date(a.dataHora) - new Date(b.dataHora));
+
     lista.innerHTML = "";
 
-    if (comp.length === 0) {
-        lista.innerHTML =
-            "<p class='mensagem-vazia'>Nenhum compromisso para este dia.</p>";
+    if (!eventosDia.length) {
+        lista.innerHTML = "<p class='mensagem-vazia'>Nenhum compromisso para este dia.</p>";
         return;
     }
 
-    comp.forEach((c, i) => {
+    const ehAdmin = usuarioEhAdmin();
+    eventosDia.forEach((c, indice) => {
+        const hora = c.dataHora ? new Date(c.dataHora).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'}) : '';
+        const botoesAdmin = ehAdmin ? `
+          <button class="btn-edit" onclick="editarCompromisso(${indice})">Editar</button>
+          <button class="btn-delete" onclick="excluirCompromisso(${indice})">Excluir</button>
+        ` : '';
+        
         lista.innerHTML += `
         <div class="item-compromisso">
-          <strong>${c.hora}</strong> — ${c.titulo}
-
-          ${
-            usuarioEhAdmin()
-              ? `
-            <div class="acoes-compromisso">
-              <button class="btn-edit" onclick="editarCompromisso(${i})">Editar</button>
-              <button class="btn-delete" onclick="excluirCompromisso(${i})">Excluir</button>
-            </div>`
-              : ""
-          }
+          <div>
+            <strong>${hora}</strong> — ${c.titulo || c.descricao || ''}
+          </div>
+          <div class="acoes-compromisso">${botoesAdmin}</div>
         </div>`;
     });
 }
@@ -901,31 +916,71 @@ document.getElementById("btnAdd").onclick = () => {
    8) SALVAR NOVO COMPROMISSO — APENAS ADMIN
 ============================================================ */
 
-document.getElementById("btnSalvar").onclick = () => {
+document.getElementById("btnSalvar").onclick = async () => {
     if (!usuarioEhAdmin()) {
         alert("Apenas administradores podem cadastrar compromissos.");
+        return;
+    }
+
+    if (!agendaUsuarioAlvoId) {
+        alert("Não foi possível identificar o usuário para salvar o compromisso.");
         return;
     }
 
     const titulo = document.getElementById("tituloComp").value;
     const hora = document.getElementById("horaComp").value;
 
-    if (!titulo || !hora) {
+    if (!titulo || !hora || !diaSelecionado) {
         alert("Preencha todos os campos.");
         return;
     }
 
-    const agenda = JSON.parse(localStorage.getItem("agenda") || "{}");
+    const usuarioRaw = localStorage.getItem('usuarioLogado');
+    const usuario = usuarioRaw ? JSON.parse(usuarioRaw) : null;
+    const criadorId = usuario && usuario.id ? String(usuario.id) : null;
 
-    if (!agenda[diaSelecionado])
-        agenda[diaSelecionado] = [];
+    const hoje = new Date();
+    const ano = agendaAnoAtual !== null ? agendaAnoAtual : hoje.getFullYear();
+    const mes = agendaMesAtual !== null ? agendaMesAtual : hoje.getMonth();
+    
+    const [hh, mm] = hora.split(':');
+    const diaStr = String(diaSelecionado).padStart(2, '0');
+    const mesStr = String(mes + 1).padStart(2, '0');
+    const anoStr = String(ano);
+    const dataHoraIso = `${anoStr}-${mesStr}-${diaStr}T${hh}:${mm}:00`;
 
-    agenda[diaSelecionado].push({ titulo, hora });
+    const payload = {
+      descricao: titulo,
+      titulo: titulo,
+      dataHora: dataHoraIso,
+      cor: '#e67e22',
+      idosoId: String(agendaUsuarioAlvoId),
+      criadorId: criadorId
+    };
 
-    localStorage.setItem("agenda", JSON.stringify(agenda));
+    try {
+      const resp = await fetch('/api/agenda', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
 
-    document.getElementById("modal").style.display = "none";
-    carregarCompromissos();
+      if (!resp.ok) {
+        const txt = await resp.text();
+        throw new Error(txt || 'Falha ao salvar evento');
+      }
+
+      const salvo = await resp.json();
+      window.agendaEventos = (window.agendaEventos || []).concat(salvo);
+      document.getElementById("modal").style.display = "none";
+      document.getElementById("tituloComp").value = '';
+      document.getElementById("horaComp").value = '';
+      carregarCompromissos();
+      marcarEventosNoCalendario(window.agendaEventos);
+      alert('Compromisso cadastrado com sucesso!');
+    } catch (e) {
+      alert('Erro ao salvar compromisso: ' + e.message);
+    }
 };
 
 /* ============================================================
@@ -938,13 +993,31 @@ function editarCompromisso(indice) {
         return;
     }
 
+    const ano = agendaAnoAtual !== null ? agendaAnoAtual : new Date().getFullYear();
+    const mes = agendaMesAtual !== null ? agendaMesAtual : new Date().getMonth();
+    
+    const eventosDia = (window.agendaEventos || [])
+      .filter(ev => {
+        if (!ev.dataHora) return false;
+        const d = new Date(ev.dataHora);
+        return d.getFullYear() === ano && d.getMonth() === mes && d.getDate() === Number(diaSelecionado);
+      })
+      .sort((a, b) => new Date(a.dataHora) - new Date(b.dataHora));
+
+    const item = eventosDia[indice];
+    if (!item) {
+        alert("Compromisso não encontrado.");
+        return;
+    }
+
     indiceEditando = indice;
+    window.eventoEditandoId = item.id;
 
-    const agenda = JSON.parse(localStorage.getItem("agenda") || "{}");
-    const item = agenda[diaSelecionado][indice];
+    const dataHora = new Date(item.dataHora);
+    const hora = dataHora.toTimeString().substring(0, 5);
 
-    document.getElementById("editarTitulo").value = item.titulo;
-    document.getElementById("editarHora").value = item.hora;
+    document.getElementById("editarTitulo").value = item.titulo || item.descricao || '';
+    document.getElementById("editarHora").value = hora;
 
     document.getElementById("modalEdit").style.display = "flex";
 }
@@ -953,46 +1026,116 @@ function editarCompromisso(indice) {
    10) SALVAR EDIÇÃO — APENAS ADMIN
 ============================================================ */
 
-function salvarEdicao() {
+async function salvarEdicao() {
     if (!usuarioEhAdmin()) {
         alert("Apenas administradores podem editar compromissos.");
+        return;
+    }
+
+    if (!window.eventoEditandoId) {
+        alert("Erro: ID do evento não encontrado.");
         return;
     }
 
     const novoTitulo = document.getElementById("editarTitulo").value;
     const novaHora = document.getElementById("editarHora").value;
 
-    const agenda = JSON.parse(localStorage.getItem("agenda") || "{}");
+    if (!novoTitulo || !novaHora) {
+        alert("Preencha todos os campos.");
+        return;
+    }
 
-    agenda[diaSelecionado][indiceEditando] = {
-        titulo: novoTitulo,
-        hora: novaHora
+    const hoje = new Date();
+    const ano = agendaAnoAtual !== null ? agendaAnoAtual : hoje.getFullYear();
+    const mes = agendaMesAtual !== null ? agendaMesAtual : hoje.getMonth();
+
+    const [hh, mm] = novaHora.split(':');
+    const diaStr = String(diaSelecionado).padStart(2, '0');
+    const mesStr = String(mes + 1).padStart(2, '0');
+    const anoStr = String(ano);
+    const dataHoraIso = `${anoStr}-${mesStr}-${diaStr}T${hh}:${mm}:00`;
+
+    const payload = {
+      titulo: novoTitulo,
+      descricao: novoTitulo,
+      dataHora: dataHoraIso
     };
 
-    localStorage.setItem("agenda", JSON.stringify(agenda));
+    try {
+      const resp = await fetch(`/api/agenda/${window.eventoEditandoId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
 
-    document.getElementById("modalEdit").style.display = "none";
+      if (!resp.ok) {
+        const txt = await resp.text();
+        throw new Error(txt || 'Falha ao atualizar evento');
+      }
 
-    carregarCompromissos();
+      const atualizado = await resp.json();
+      
+      const idx = window.agendaEventos.findIndex(e => e.id === window.eventoEditandoId);
+      if (idx !== -1) window.agendaEventos[idx] = atualizado;
+
+      document.getElementById("modalEdit").style.display = "none";
+      carregarCompromissos();
+      marcarEventosNoCalendario(window.agendaEventos);
+      alert('Compromisso atualizado com sucesso!');
+    } catch (e) {
+      alert('Erro ao atualizar compromisso: ' + e.message);
+    }
 }
 
 /* ============================================================
    11) EXCLUIR COMPROMISSO — APENAS ADMIN
 ============================================================ */
 
-function excluirCompromisso(indice) {
+async function excluirCompromisso(indice) {
     if (!usuarioEhAdmin()) {
         alert("Apenas administradores podem excluir compromissos.");
         return;
     }
 
-    const agenda = JSON.parse(localStorage.getItem("agenda") || "{}");
+    if (!confirm("Deseja realmente excluir este compromisso?")) {
+        return;
+    }
 
-    agenda[diaSelecionado].splice(indice, 1);
+    const ano = agendaAnoAtual !== null ? agendaAnoAtual : new Date().getFullYear();
+    const mes = agendaMesAtual !== null ? agendaMesAtual : new Date().getMonth();
 
-    localStorage.setItem("agenda", JSON.stringify(agenda));
+    const eventosDia = (window.agendaEventos || [])
+      .filter(ev => {
+        if (!ev.dataHora) return false;
+        const d = new Date(ev.dataHora);
+        return d.getFullYear() === ano && d.getMonth() === mes && d.getDate() === Number(diaSelecionado);
+      })
+      .sort((a, b) => new Date(a.dataHora) - new Date(b.dataHora));
 
-    carregarCompromissos();
+    const item = eventosDia[indice];
+    if (!item || !item.id) {
+        alert("Compromisso não encontrado.");
+        return;
+    }
+
+    try {
+      const resp = await fetch(`/api/agenda/${item.id}`, {
+        method: 'DELETE'
+      });
+
+      if (!resp.ok) {
+        const txt = await resp.text();
+        throw new Error(txt || 'Falha ao excluir evento');
+      }
+
+      window.agendaEventos = window.agendaEventos.filter(e => e.id !== item.id);
+
+      carregarCompromissos();
+      marcarEventosNoCalendario(window.agendaEventos);
+      alert('Compromisso excluído com sucesso!');
+    } catch (e) {
+      alert('Erro ao excluir compromisso: ' + e.message);
+    }
 }
 
 /* ============================================================

@@ -7,9 +7,11 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -79,5 +81,41 @@ public class AgendaRestController {
     @GetMapping("/usuarios/nao-admin")
     public ResponseEntity<?> listarUsuariosNaoAdmin() {
         return ResponseEntity.ok(usuariosRepo.findByIsAdminFalse());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizarEvento(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        Agenda evento = agendaRepo.findById(id).orElse(null);
+        if (evento == null) {
+            return ResponseEntity.status(404).body("Evento não encontrado");
+        }
+
+        try {
+            if (body.containsKey("titulo")) evento.setTitulo(body.get("titulo"));
+            if (body.containsKey("descricao")) evento.setDescricao(body.get("descricao"));
+            if (body.containsKey("dataHora")) evento.setDataHora(LocalDateTime.parse(body.get("dataHora")));
+            if (body.containsKey("cor")) evento.setCor(body.get("cor"));
+
+            Agenda atualizado = agendaRepo.save(evento);
+            return ResponseEntity.ok(atualizado);
+        } catch (DateTimeParseException dte) {
+            return ResponseEntity.badRequest().body("Formato de data/hora inválido. Use ISO-8601, ex: 2025-11-16T14:00:00");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro ao atualizar evento: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> excluirEvento(@PathVariable Long id) {
+        if (!agendaRepo.existsById(id)) {
+            return ResponseEntity.status(404).body("Evento não encontrado");
+        }
+        
+        try {
+            agendaRepo.deleteById(id);
+            return ResponseEntity.ok("Evento excluído com sucesso");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro ao excluir evento: " + e.getMessage());
+        }
     }
 }
