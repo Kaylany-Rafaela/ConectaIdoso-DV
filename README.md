@@ -42,3 +42,4 @@ Desenvolver um WebApp intuitivo para idosos, oferecendo:
 - [Protótipo no Figma](https://cargo-admin-57066249.figma.site/)  
 - [DER no DBDesigner](https://dbdesigner.page.link/15ik4fAQUsAdZm4p8)
 - [Documentação Atualizada](https://docs.google.com/document/d/1srIqeRD_Yc5uWz9_HF4N07q8KZ3cLpxt/edit?usp=sharing&ouid=115523055083426576221&rtpof=true&sd=true)
+- [Apresentação Final](https://youtu.be/dLZPLrkEVDs)
